@@ -72,7 +72,7 @@ ig.Entity.inject({
             // Check if we've reached our destination
             if (currentNode.x == destinationNode.x && currentNode.y == destinationNode.y) {
                 // Add the destination to the path
-                var path = [{
+                this.path = [{
                     x: destinationNode.x * mapTilesize,
                     y: destinationNode.y * mapTilesize
                 }];
@@ -82,13 +82,12 @@ ig.Entity.inject({
                     currentNode = closed[currentNode.p];
                     
                     // Add the steps to the path
-                    path.unshift({
+                    this.path.unshift({
                         x: currentNode.x * mapTilesize,
                         y: currentNode.y * mapTilesize
                     });
                 }
 
-                this.path = path;
                 return;
             }
 
