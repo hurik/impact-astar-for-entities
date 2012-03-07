@@ -23,7 +23,7 @@ ig.Entity.inject({
 
         if (ig.Entity._debugShowPaths) {
             // When there is a path draw it ...
-            if (this.path) {
+            if (this.path && this.path.length > 1) {
                 ig.system.context.strokeStyle = 'rgba(255,0,0,0.5)';
                 ig.system.context.lineWidth = 4.0;
 
@@ -31,7 +31,6 @@ ig.Entity.inject({
 
                 ig.system.context.moveTo(
                 ig.system.getDrawPos(this.path[0].x + ig.game.collisionMap.tilesize / 2 - ig.game.screen.x), ig.system.getDrawPos(this.path[0].y + ig.game.collisionMap.tilesize / 2 - ig.game.screen.y));
-
 
                 for (var i = 1; i < this.path.length; i++) {
                     ig.system.context.lineTo(

@@ -37,6 +37,12 @@ ig.Entity.inject({
             return;
         }
 
+        // Check if the destination tile is not the start tile ...
+        if (destinationNode.x == startNode.x && destinationNode.y == startNode.y) {
+            this.path = null;
+            return;
+        }
+
         // Our two lists
         var open = [],
             closed = [];
