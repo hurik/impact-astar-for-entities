@@ -15,15 +15,28 @@ http://impactjs.com/forums/code/a-path-finder
     * Very much room for improvments ...
 
 ## Changelog
+### v0.6.0
+* A* search algorithm
+    * Checks now for walkable tiles and not for walls, no more problems with slopes anymore 
+* path following
+    * Added entity movement stop when there is no path
+    * No rounding anymore for diagonal movments speed calculation
+
 #### v0.5.2
-* followPath now really working, but far from perfect ...
+* path following
+    * followPath now really working, but far from perfect ...
 
 #### v0.5.1
-* followPath working for low framrates but FAR from a good implementation
+* path following
+    * followPath working for low framrates but FAR from a good implementation
 
-#### v0.5.0
-* Added version numbering
-* Added followPath(speed) function (Experimental at the moment, low framerates not working ...)
-* The start tile of the entity is not anymore a part of the path
-* Startpoint of the 'show paths' debug feature is now the middle of the entity
-* New example image
+### v0.5.0
+* General
+    * Added version numbering
+    * New example image
+* A* search algorithm
+    * The start tile of the entity is not anymore a part of the path
+* path following
+    * Added followPath(speed) function (Experimental at the moment, low framerates not working ...)
+* Debug
+    * Startpoint of the 'show paths' debug feature is now the middle of the entity

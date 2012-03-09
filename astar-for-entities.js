@@ -2,7 +2,7 @@
 * astar-for-entities
 * https://github.com/hurik/impact-astar-for-entities
 *
-* v0.5.2
+* v0.6.0
 *
 * Created by Andreas Giemza on 2012-03-09.
 * Copyright (c) 2012 Andreas Giemza. All rights reserved.
@@ -33,8 +33,8 @@ ig.Entity.inject({
         var startNode = new asfeNode((this.pos.x / mapTilesize).floor(), (this.pos.y / mapTilesize).floor(), -1),
             destinationNode = new asfeNode((destinationX / mapTilesize).floor(), (destinationY / mapTilesize).floor(), -1);
 
-        // Quick check if the destination tile is not a wall
-        if (map[destinationNode.y][destinationNode.x] == 1) {
+        // Quick check if the destination tile is free
+        if (map[destinationNode.y][destinationNode.x] != 0) {
             this.path = null;
             return;
         }
@@ -126,8 +126,8 @@ ig.Entity.inject({
                         continue;
                     }
 
-                    // Check if there is no wall on the node
-                    if (map[newY][newX] == 1) {
+                    // Check if the tile is free
+                    if (map[newY][newX] != 0) {
                         continue;
                     }
 
@@ -228,7 +228,7 @@ ig.Entity.inject({
 
             // Calculate the speed if we move diagonal
             if (this.pos.x != this.path[0].x && this.pos.y != this.path[0].y) {
-                speed = Math.floor(Math.sqrt(Math.pow(speed, 2) / 2));
+                speed = Math.sqrt(Math.pow(speed, 2) / 2);
             }
 
             // Move it in the right direction ...
@@ -249,6 +249,10 @@ ig.Entity.inject({
             } else if (this.pos.y > this.path[0].y) {
                 this.vel.y = -speed;
             }
+        } else {
+            // When there is no path, don't move ...
+            this.vel.x = 0;
+            this.vel.y = 0;
         }
     }
 });
