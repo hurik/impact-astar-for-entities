@@ -2,7 +2,9 @@
 * astar-for-entities
 * https://github.com/hurik/impact-astar-for-entities
 *
-* Created by Andreas Giemza on 2012-03-07.
+* v0.5.0
+*
+* Created by Andreas Giemza on 2012-03-09.
 * Copyright (c) 2012 Andreas Giemza. All rights reserved.
 *
 * Based on: https://gist.github.com/994534
@@ -84,17 +86,20 @@ ig.Entity.inject({
                 }];
 
                 // Go up the chain to recreate the path 
-                while (currentNode.p != -1) {
+                while (true) {
                     currentNode = closed[currentNode.p];
-                    
+
+                    // Stop when you get to the start node ...
+                    if (currentNode.p == -1) {
+                        return;
+                    }
+
                     // Add the steps to the path
                     this.path.unshift({
                         x: currentNode.x * mapTilesize,
                         y: currentNode.y * mapTilesize
                     });
                 }
-
-                return;
             }
 
             // Erase the current node from the open list
@@ -166,7 +171,7 @@ ig.Entity.inject({
                             nodes[newX + ',' + newY].f = tempG + nodes[newX + ',' + newY].h;
                             nodes[newX + ',' + newY].p = closed.length - 1;
                         }
-                        
+
                         continue;
                     }
 
@@ -192,7 +197,58 @@ ig.Entity.inject({
 
         }
 
+        // No path found ...
         this.path = null;
+    },
+
+    followPath: function(speed) {
+        // Only do something if there is a path ...
+        if (this.path) {
+            // Did we reached a waypoint?
+            if (Math.floor(this.pos.x) == this.path[0].x && Math.floor(this.pos.y) == this.path[0].y) {
+                    // Was it the last waypoint?
+                    if (this.path.length == 1) {
+                        // Stopp the movement and set the position
+                        this.vel.x = 0;
+                        this.pos.x = this.path[0].x;
+                        this.vel.y = 0;
+                        this.pos.y = this.path[0].y;
+                    }
+
+                    // Erase the last waypoint
+                    this.path.splice(0, 1);
+
+                    // if it was the last nothing to do ...
+                    if (!this.path.length) {
+                        this.path = null;
+                        return;
+                    }
+            }
+
+            // Check if we move diagonal ...
+            if (this.pos.x != this.path[0].x && this.pos.y != this.path[0].y) {
+                speed = Math.sqrt(Math.pow(speed, 2) / 2);
+            }
+
+            // Move it in the right direction ...
+            if (Math.floor(this.pos.x) < this.path[0].x) {
+                this.vel.x = speed;
+            } else if (Math.floor(this.pos.x) > this.path[0].x) {
+                this.vel.x = -speed;
+            } else {
+                this.vel.x = 0;
+                this.pos.x = this.path[0].x;
+            }
+
+            if (Math.floor(this.pos.y) < this.path[0].y) {
+                this.vel.y = speed;
+            } else if (Math.floor(this.pos.y) > this.path[0].y) {
+                this.vel.y = -speed;
+            } else {
+                this.vel.y = 0;
+                this.pos.y = this.path[0].y;
+            }
+        }
     }
 });
 
