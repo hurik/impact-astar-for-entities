@@ -2,7 +2,7 @@
 * astar-for-entities
 * https://github.com/hurik/impact-astar-for-entities
 *
-* v0.5.0
+* v0.5.1
 *
 * Created by Andreas Giemza on 2012-03-09.
 * Copyright (c) 2012 Andreas Giemza. All rights reserved.
@@ -205,44 +205,46 @@ ig.Entity.inject({
         // Only do something if there is a path ...
         if (this.path) {
             // Did we reached a waypoint?
-            if (Math.floor(this.pos.x) == this.path[0].x && Math.floor(this.pos.y) == this.path[0].y) {
-                    // Was it the last waypoint?
-                    if (this.path.length == 1) {
-                        // Stopp the movement and set the position
-                        this.vel.x = 0;
-                        this.pos.x = this.path[0].x;
-                        this.vel.y = 0;
-                        this.pos.y = this.path[0].y;
-                    }
+            if (((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x == this.path[0].x) &&
+                ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || this.pos.y == this.path[0].y)) {
+                // Was it the last waypoint?
+                if (this.path.length == 1) {
+                    // Stopp the movement and set the position
+                    this.vel.x = 0;
+                    this.pos.x = this.path[0].x;
+                    this.vel.y = 0;
+                    this.pos.y = this.path[0].y;
+                }
 
-                    // Erase the last waypoint
-                    this.path.splice(0, 1);
+                // Erase the last waypoint
+                this.path.splice(0, 1);
 
-                    // if it was the last nothing to do ...
-                    if (!this.path.length) {
-                        this.path = null;
-                        return;
-                    }
+                // if it was the last nothing to do ...
+                if (!this.path.length) {
+                    this.path = null;
+                    return;
+                }
             }
 
-            // Check if we move diagonal ...
+            // Calculate the speed if we move diagonal
             if (this.pos.x != this.path[0].x && this.pos.y != this.path[0].y) {
-                speed = Math.sqrt(Math.pow(speed, 2) / 2);
+                speed = Math.floor(Math.sqrt(Math.pow(speed, 2) / 2));
             }
 
             // Move it in the right direction ...
-            if (Math.floor(this.pos.x) < this.path[0].x) {
+            if (this.pos.x < this.path[0].x) {
                 this.vel.x = speed;
-            } else if (Math.floor(this.pos.x) > this.path[0].x) {
+            } else if (this.pos.x > this.path[0].x) {
                 this.vel.x = -speed;
             } else {
                 this.vel.x = 0;
                 this.pos.x = this.path[0].x;
             }
 
-            if (Math.floor(this.pos.y) < this.path[0].y) {
+
+            if (this.pos.y < this.path[0].y) {
                 this.vel.y = speed;
-            } else if (Math.floor(this.pos.y) > this.path[0].y) {
+            } else if (this.pos.y > this.path[0].y) {
                 this.vel.y = -speed;
             } else {
                 this.vel.y = 0;

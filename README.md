@@ -4,7 +4,7 @@
 Too lazy ...
 http://impactjs.com/forums/code/a-path-finder
 
-## Example ###
+## Example
 ![Example](/hurik/impact-astar-for-entities/raw/master/example.png)
 
 ## TODO
@@ -12,9 +12,12 @@ http://impactjs.com/forums/code/a-path-finder
     * Make it faster
     * Optimize it for nicer paths
 * path following (!!! Experimental !!!)
-    * Not working right a the moment for low framerates
+    * Very much room for improvments ...
 
 ## Changelog
+#### v0.5.1
+* followPath working for low framrates but FAR from a good implementation
+
 #### v0.5.0
 * Added version numbering
 * Added followPath(speed) function (Experimental at the moment, see TODO!)
