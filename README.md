@@ -15,12 +15,15 @@ http://impactjs.com/forums/code/a-path-finder
     * Very much room for improvments ...
 
 ## Changelog
+#### v0.5.2
+* followPath now really working, but far from perfect ...
+
 #### v0.5.1
 * followPath working for low framrates but FAR from a good implementation
 
 #### v0.5.0
 * Added version numbering
-* Added followPath(speed) function (Experimental at the moment, see TODO!)
+* Added followPath(speed) function (Experimental at the moment, low framerates not working ...)
 * The start tile of the entity is not anymore a part of the path
-* Startpoint of the 'show paths' debug feature is noww the middle of the entity
+* Startpoint of the 'show paths' debug feature is now the middle of the entity
 * New example image

@@ -2,7 +2,7 @@
 * astar-for-entities
 * https://github.com/hurik/impact-astar-for-entities
 *
-* v0.5.1
+* v0.5.2
 *
 * Created by Andreas Giemza on 2012-03-09.
 * Copyright (c) 2012 Andreas Giemza. All rights reserved.
@@ -205,7 +205,7 @@ ig.Entity.inject({
         // Only do something if there is a path ...
         if (this.path) {
             // Did we reached a waypoint?
-            if (((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x == this.path[0].x) &&
+            if (((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x == this.path[0].x) && 
                 ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || this.pos.y == this.path[0].y)) {
                 // Was it the last waypoint?
                 if (this.path.length == 1) {
@@ -232,23 +232,22 @@ ig.Entity.inject({
             }
 
             // Move it in the right direction ...
-            if (this.pos.x < this.path[0].x) {
+            if ((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x)) {
+                this.vel.x = 0;
+                this.pos.x = this.path[0].x;
+            } else if (this.pos.x < this.path[0].x) {
                 this.vel.x = speed;
             } else if (this.pos.x > this.path[0].x) {
                 this.vel.x = -speed;
-            } else {
-                this.vel.x = 0;
-                this.pos.x = this.path[0].x;
             }
 
-
-            if (this.pos.y < this.path[0].y) {
+            if ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y)) {
+                this.vel.y = 0;
+                this.pos.y = this.path[0].y;
+            } else if (this.pos.y < this.path[0].y) {
                 this.vel.y = speed;
             } else if (this.pos.y > this.path[0].y) {
                 this.vel.y = -speed;
-            } else {
-                this.vel.y = 0;
-                this.pos.y = this.path[0].y;
             }
         }
     }
