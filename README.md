@@ -5,7 +5,7 @@ Too lazy ...
 http://impactjs.com/forums/code/a-path-finder
 
 ## Example
-To try it open 'example/try-it!.html'.
+To try it open: example/try-it!.html
 
 To change the level or work with the code add the missing libary files of impaxt to example.
 
@@ -22,7 +22,11 @@ To change the level or work with the code add the missing libary files of impaxt
     * Is only a example for one implementation
 
 ## Changelog
-#### v0.8.0
+## v0.8.1
+* General
+    * Little example demo update
+
+### v0.8.0
 * General
     * Added example
 
