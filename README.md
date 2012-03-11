@@ -7,7 +7,7 @@ http://impactjs.com/forums/code/a-path-finder
 ## Example
 To try it open: example/try-it!.html
 
-To change the level or work with the code add the missing libary files of impaxt to example.
+To change the level or work with the code, add the missing impact libary files in the example folder.
 
 ## Example
 ![Example](/hurik/impact-astar-for-entities/raw/master/example.png)
@@ -22,7 +22,12 @@ To change the level or work with the code add the missing libary files of impaxt
     * Is only a example for one implementation
 
 ## Changelog
-## v0.8.1
+#### v0.8.2
+* General
+    * Example image changed
+    * Readme improved
+
+#### v0.8.1
 * General
     * Little example demo update
 
