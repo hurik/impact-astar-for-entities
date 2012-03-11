@@ -5,6 +5,11 @@ Too lazy ...
 http://impactjs.com/forums/code/a-path-finder
 
 ## Example
+To try it open 'example/try-it!.html'.
+
+To change the level or work with the code add the missing libary files of impaxt to example.
+
+## Example
 ![Example](/hurik/impact-astar-for-entities/raw/master/example.png)
 
 ## TODO
@@ -17,6 +22,10 @@ http://impactjs.com/forums/code/a-path-finder
     * Is only a example for one implementation
 
 ## Changelog
+#### v0.8.0
+* General
+    * Added example
+
 ### v0.7.0
 * A* search algorithm
     * Now calculates the real distances, working with even numbers wasn't faster
