@@ -56,13 +56,11 @@ ig.debug.addPanel({
     name: 'astar-for-entities-debug',
     label: 'A*',
 
-    options: [
-        {
-            name: 'Show paths',
-            object: ig.Entity,
-            property: '_debugShowPaths'
-        }
-    ]
+    options: [{
+        name: 'Show paths',
+        object: ig.Entity,
+        property: '_debugShowPaths'
+    }]
 });
 
 });

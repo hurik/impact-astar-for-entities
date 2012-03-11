@@ -8,13 +8,21 @@ http://impactjs.com/forums/code/a-path-finder
 ![Example](/hurik/impact-astar-for-entities/raw/master/example.png)
 
 ## TODO
-* A* search algorithm
+* A* search algorithm (getPath)
     * Make it faster
     * Optimize it for nicer paths
-* path following (!!! Experimental !!!)
+* path following (followPath) (!!! Experimental !!!)
     * Very much room for improvments ...
+* path drawing (drawPath)
+    * Is only a example for one implementation
 
 ## Changelog
+### v0.7.0
+* A* search algorithm
+    * Now calculates the real distances, working with even numbers wasn't faster
+* path drawing
+    * Basic function added, only a example
+
 ### v0.6.0
 * A* search algorithm
     * Checks now for walkable tiles and not for walls, no more problems with slopes anymore 

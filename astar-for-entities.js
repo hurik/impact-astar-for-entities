@@ -2,7 +2,7 @@
 * astar-for-entities
 * https://github.com/hurik/impact-astar-for-entities
 *
-* v0.6.0
+* v0.7.0
 *
 * Created by Andreas Giemza on 2012-03-09.
 * Copyright (c) 2012 Andreas Giemza. All rights reserved.
@@ -159,11 +159,7 @@ ig.Entity.inject({
                         }
 
                         // Calculate the g value
-                        if ((dx == -1 && dy == -1) || (dx == 1 && dy == -1) || (dx == -1 && dy == 1) || (dx == 1 && dy == 1)) {
-                            tempG = currentNode.g + 14;
-                        } else {
-                            tempG = currentNode.g + 10;
-                        }
+                        tempG = currentNode.g + Math.sqrt(Math.pow(newX - currentNode.x, 2) + Math.pow(newY - currentNode.y, 2));
 
                         // If it is smaller than the g value in the existing node update the node
                         if (tempG < nodes[newX + ',' + newY].g) {
@@ -181,12 +177,8 @@ ig.Entity.inject({
                     nodes[newNode.x + ',' + newNode.y] = newNode;
 
                     // Fill it with values
-                    if ((dx == -1 && dy == -1) || (dx == 1 && dy == -1) || (dx == -1 && dy == 1) || (dx == 1 && dy == 1)) {
-                        newNode.g = currentNode.g + 14;
-                    } else {
-                        newNode.g = currentNode.g + 10;
-                    }
-                    newNode.h = 10 * Math.sqrt(Math.pow(newNode.x - destinationNode.x, 2) + Math.pow(newNode.y - destinationNode.y, 2));
+                    newNode.g = currentNode.g + Math.sqrt(Math.pow(newNode.x - currentNode.x, 2) + Math.pow(newNode.y - currentNode.y, 2));
+                    newNode.h = Math.sqrt(Math.pow(newNode.x - destinationNode.x, 2) + Math.pow(newNode.y - destinationNode.y, 2));
                     newNode.f = newNode.g + newNode.h;
 
                     // And push it on the open list ...
@@ -205,8 +197,7 @@ ig.Entity.inject({
         // Only do something if there is a path ...
         if (this.path) {
             // Did we reached a waypoint?
-            if (((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x == this.path[0].x) && 
-                ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || this.pos.y == this.path[0].y)) {
+            if (((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x == this.path[0].x) && ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || this.pos.y == this.path[0].y)) {
                 // Was it the last waypoint?
                 if (this.path.length == 1) {
                     // Stopp the movement and set the position
@@ -253,6 +244,19 @@ ig.Entity.inject({
             // When there is no path, don't move ...
             this.vel.x = 0;
             this.vel.y = 0;
+        }
+    },
+
+    drawPath: function(r, g, b, a) {
+        if (this.path) {
+            // When you want to have a line instead of the points, check the astar-for-entities-debug.js and look how it works ...
+            var mapTilesize = ig.game.collisionMap.tilesize;
+
+            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
+
+            for (var i = 0; i < this.path.length; i++) {
+                ig.system.context.fillRect(ig.system.getDrawPos(this.path[i].x + mapTilesize / 2 - 1 - ig.game.screen.x), ig.system.getDrawPos(this.path[i].y + mapTilesize / 2 - 1 - ig.game.screen.y), 2 * ig.system.scale, 2 * ig.system.scale);
+            }
         }
     }
 });
