@@ -2,9 +2,9 @@
 * astar-for-entities
 * https://github.com/hurik/impact-astar-for-entities
 *
-* v0.7.0
+* v0.8.3
 *
-* Created by Andreas Giemza on 2012-03-09.
+* Created by Andreas Giemza on 2012-04-02.
 * Copyright (c) 2012 Andreas Giemza. All rights reserved.
 *
 * Based on: https://gist.github.com/994534
@@ -53,7 +53,7 @@ ig.Entity.inject({
         var nodes = {};
 
         // Some variables we need later ...
-        var bestCost, bestNode, currentNode, newX, newY, tempG, newNode;
+        var bestCost, bestNode, currentNode, newX, newY, tempG, newNode, lastDirection, direction;
 
         // Push the start node on the open list
         open.push(startNode);
@@ -85,6 +85,20 @@ ig.Entity.inject({
                     y: destinationNode.y * mapTilesize
                 }];
 
+                // direction
+                // 0 stand for X and Y change
+                // 1 stands for X change
+                // 2 stand for Y change
+
+                // Get the direction
+                if (currentNode.x != closed[currentNode.p].x && currentNode.y != closed[currentNode.p].y) {
+                    lastDirection = 0;
+                } else if (currentNode.x != closed[currentNode.p].x && currentNode.y == closed[currentNode.p].y) {
+                    lastDirection = 1;
+                } else if (currentNode.x == closed[currentNode.p].x && currentNode.y != closed[currentNode.p].y) {
+                    lastDirection = 2;
+                }
+
                 // Go up the chain to recreate the path 
                 while (true) {
                     currentNode = closed[currentNode.p];
@@ -94,11 +108,25 @@ ig.Entity.inject({
                         return;
                     }
 
-                    // Add the steps to the path
-                    this.path.unshift({
-                        x: currentNode.x * mapTilesize,
-                        y: currentNode.y * mapTilesize
-                    });
+                    // Get the direction
+                    if (currentNode.x != closed[currentNode.p].x && currentNode.y != closed[currentNode.p].y) {
+                        direction = 0;
+                    } else if (currentNode.x != closed[currentNode.p].x && currentNode.y == closed[currentNode.p].y) {
+                        direction = 1;
+                    } else if (currentNode.x == closed[currentNode.p].x && currentNode.y != closed[currentNode.p].y) {
+                        direction = 2;
+                    }
+
+                    // Only save the path node, if the path changes the direction
+                    if (direction != lastDirection) {
+                        // Add the steps to the path
+                        this.path.unshift({
+                            x: currentNode.x * mapTilesize,
+                            y: currentNode.y * mapTilesize
+                        });
+                    }
+
+                    lastDirection = direction;
                 }
             }
 
@@ -160,7 +188,7 @@ ig.Entity.inject({
 
                         // Calculate the g value
                         tempG = currentNode.g + Math.sqrt(Math.pow(newX - currentNode.x, 2) + Math.pow(newY - currentNode.y, 2));
-
+                        
                         // If it is smaller than the g value in the existing node update the node
                         if (tempG < nodes[newX + ',' + newY].g) {
                             nodes[newX + ',' + newY].g = tempG;
@@ -247,16 +275,25 @@ ig.Entity.inject({
         }
     },
 
-    drawPath: function(r, g, b, a) {
+    drawPath: function(r, g, b, a, lineWidth) {
         if (this.path) {
-            // When you want to have a line instead of the points, check the astar-for-entities-debug.js and look how it works ...
             var mapTilesize = ig.game.collisionMap.tilesize;
 
-            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
+            ig.system.context.strokeStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
+            ig.system.context.lineWidth = lineWidth * ig.system.scale;
+
+            ig.system.context.beginPath();
+
+            ig.system.context.moveTo(
+            ig.system.getDrawPos(this.pos.x + this.size.x / 2 - ig.game.screen.x), ig.system.getDrawPos(this.pos.y + this.size.y / 2 - ig.game.screen.y));
 
             for (var i = 0; i < this.path.length; i++) {
-                ig.system.context.fillRect(ig.system.getDrawPos(this.path[i].x + mapTilesize / 2 - 1 - ig.game.screen.x), ig.system.getDrawPos(this.path[i].y + mapTilesize / 2 - 1 - ig.game.screen.y), 2 * ig.system.scale, 2 * ig.system.scale);
+                ig.system.context.lineTo(
+                ig.system.getDrawPos(this.path[i].x + mapTilesize / 2 - ig.game.screen.x), ig.system.getDrawPos(this.path[i].y + mapTilesize / 2 - ig.game.screen.y));
             }
+
+            ig.system.context.stroke();
+            ig.system.context.closePath();
         }
     }
 });

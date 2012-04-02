@@ -22,6 +22,14 @@ To change the level or work with the code, add the missing impact libary files i
     * Is only a example for one implementation
 
 ## Changelog
+#### v0.8.3
+* A* search algorithm
+    * Path now only saves the nodes, when the walking direction changed
+* path drawing
+    * Because the new path save style, its now a line, like in the debug
+* General
+    * Example image changed
+
 #### v0.8.2
 * General
     * Example image changed
