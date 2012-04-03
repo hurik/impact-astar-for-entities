@@ -19,17 +19,19 @@ To change the level or work with the code, add the missing impact libary files i
 ## Example images
 #### With direction change malus
 ![New example](/hurik/impact-astar-for-entities/raw/master/example_with_malus.png)
+
 15 direction changes
 
 #### Old algorithm without direction change malus
 ![Example](/hurik/impact-astar-for-entities/raw/master/example.png)
+
 22 direction changes (7 more!)
 
 
 ## TODO
 * A* search algorithm (getPath)
     * Make it faster
-    * Add coordinated movement (For the futur ...)
+    * Add coordinated movement (For the future ...)
 * path following (followPath) (!!! Experimental !!!)
     * Very much room for improvments ...
 
