@@ -1,30 +1,51 @@
 # Impact A* for Entities
 
 ## Information
-Too lazy ...
-http://impactjs.com/forums/code/a-path-finder
+This plugin for the [Impact Game Engine](http://impactjs.com/) and added pathfinding to the entities. It also has a basic path following function, a example for path drawing function and a debug panel for showing the path of all entities. 
+
+More information in the [Impact Game Engine Forum](http://impactjs.com/forums/): http://impactjs.com/forums/code/a-path-finder
+
+
+## Usage
+Check the example/lib/game/game.js and example/lib/game/entities/player.js!
+
 
 ## Example
 To try it open: example/try-it!.html
 
-To change the level or work with the code, add the missing impact libary files in the example folder.
+To change the level or work with the code, add the missing impact libary files in the example folder. And when you do it, don't overwrite the main.js.
 
-## Example
+
+## Example images
+#### With direction change malus
+![New example](/hurik/impact-astar-for-entities/raw/master/example_with_malus.png)
+15 direction changes
+
+#### Old algorithm without direction change malus
 ![Example](/hurik/impact-astar-for-entities/raw/master/example.png)
+22 direction changes (7 more!)
+
 
 ## TODO
 * A* search algorithm (getPath)
     * Make it faster
-    * Optimize it for nicer paths
+    * Add coordinated movement (For the futur ...)
 * path following (followPath) (!!! Experimental !!!)
     * Very much room for improvments ...
-* path drawing (drawPath)
-    * Is only a example for one implementation
+
 
 ## Changelog
+### v0.9.0
+* A* search algorithm
+    * Added malus for direction change -> now nicer paths
+* General
+    * Added new example image to explain the direction change malus
+    * Example demo updated the new code
+    * Readme improved
+
 #### v0.8.3
 * A* search algorithm
-    * Path now only saves the nodes, when the walking direction changed
+    * Path now only saves the nodes, when the walking direction changed (Much less path points)
 * path drawing
     * Because the new path save style, its now a line, like in the debug
 * General
@@ -47,18 +68,18 @@ To change the level or work with the code, add the missing impact libary files i
 * A* search algorithm
     * Now calculates the real distances, working with even numbers wasn't faster
 * path drawing
-    * Basic function added, only a example
+    * Basic function added, only as an example for a possible implematation
 
 ### v0.6.0
 * A* search algorithm
     * Checks now for walkable tiles and not for walls, no more problems with slopes anymore 
 * path following
     * Added entity movement stop when there is no path
-    * No rounding anymore for diagonal movments speed calculation
+    * No rounding anymore for diagonal movments speed calculation (Doesn't impact the framerate)
 
 #### v0.5.2
 * path following
-    * followPath now really working, but far from perfect ...
+    * followPath now really working, but still far from perfect ...
 
 #### v0.5.1
 * path following

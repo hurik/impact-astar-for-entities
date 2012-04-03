@@ -2,9 +2,9 @@
 * astar-for-entities
 * https://github.com/hurik/impact-astar-for-entities
 *
-* v0.8.3
+* v0.9.0
 *
-* Created by Andreas Giemza on 2012-04-02.
+* Created by Andreas Giemza on 2012-04-03.
 * Copyright (c) 2012 Andreas Giemza. All rights reserved.
 *
 * Based on: https://gist.github.com/994534
@@ -30,8 +30,8 @@ ig.Entity.inject({
             map = ig.game.collisionMap.data;
 
         // Create the start and the destination as nodes
-        var startNode = new asfeNode((this.pos.x / mapTilesize).floor(), (this.pos.y / mapTilesize).floor(), -1),
-            destinationNode = new asfeNode((destinationX / mapTilesize).floor(), (destinationY / mapTilesize).floor(), -1);
+        var startNode = new asfeNode((this.pos.x / mapTilesize).floor(), (this.pos.y / mapTilesize).floor(), -1, 0),
+            destinationNode = new asfeNode((destinationX / mapTilesize).floor(), (destinationY / mapTilesize).floor(), -1, 0);
 
         // Quick check if the destination tile is free
         if (map[destinationNode.y][destinationNode.x] != 0) {
@@ -138,6 +138,14 @@ ig.Entity.inject({
             // Also set the indicator to closed
             currentNode.closed = true;
 
+            // Direction
+            // 1 4 6
+            // 2 X 7
+            // 3 5 8
+            // 0 is ignored for start and end node
+
+            direction = 0;
+
             // Now create all 8 neighbors of the node
             for (var dx = -1; dx <= 1; dx++) {
                 for (var dy = -1; dy <= 1; dy++) {
@@ -145,6 +153,8 @@ ig.Entity.inject({
                     if (dx == 0 && dy == 0) {
                         continue;
                     }
+
+                    direction++;
 
                     newX = currentNode.x + dx;
                     newY = currentNode.y + dy;
@@ -187,25 +197,39 @@ ig.Entity.inject({
                         }
 
                         // Calculate the g value
-                        tempG = currentNode.g + Math.sqrt(Math.pow(newX - currentNode.x, 2) + Math.pow(newY - currentNode.y, 2));
+
+                        if (currentNode.d == direction) {
+                            // No direction change or current node is the start node
+                            tempG = currentNode.g + Math.sqrt(Math.pow(newX - currentNode.x, 2) + Math.pow(newY - currentNode.y, 2));
+                        } else {
+                            // Direction changed, add malus of 1
+                            tempG = currentNode.g + Math.sqrt(Math.pow(newX - currentNode.x, 2) + Math.pow(newY - currentNode.y, 2)) + 1;
+                        }
                         
-                        // If it is smaller than the g value in the existing node update the node
+                        // If it is smaller than the g value in the existing node, update the node
                         if (tempG < nodes[newX + ',' + newY].g) {
                             nodes[newX + ',' + newY].g = tempG;
                             nodes[newX + ',' + newY].f = tempG + nodes[newX + ',' + newY].h;
                             nodes[newX + ',' + newY].p = closed.length - 1;
+                            nodes[newX + ',' + newY].d = direction;
                         }
 
                         continue;
                     }
 
                     // After this thousand checks we create an new node
-                    newNode = new asfeNode(newX, newY, closed.length - 1);
+                    newNode = new asfeNode(newX, newY, closed.length - 1, direction);
                     // Put it on the hash list
                     nodes[newNode.x + ',' + newNode.y] = newNode;
 
-                    // Fill it with values
-                    newNode.g = currentNode.g + Math.sqrt(Math.pow(newNode.x - currentNode.x, 2) + Math.pow(newNode.y - currentNode.y, 2));
+                    // Fill it with value
+                    if (currentNode.d == direction || currentNode.d == 0) {
+                        // No direction change or current node is the start node
+                        newNode.g = currentNode.g + Math.sqrt(Math.pow(newNode.x - currentNode.x, 2) + Math.pow(newNode.y - currentNode.y, 2));
+                    } else {
+                        // Direction changed, add malus of 1
+                        newNode.g = currentNode.g + Math.sqrt(Math.pow(newNode.x - currentNode.x, 2) + Math.pow(newNode.y - currentNode.y, 2)) + 1;
+                    }
                     newNode.h = Math.sqrt(Math.pow(newNode.x - destinationNode.x, 2) + Math.pow(newNode.y - destinationNode.y, 2));
                     newNode.f = newNode.g + newNode.h;
 
@@ -298,12 +322,14 @@ ig.Entity.inject({
     }
 });
 
-asfeNode = function(x, y, p) {
+asfeNode = function(x, y, p, d) {
     // Coordinates
     this.x = x;
     this.y = y;
     // Parent
     this.p = p;
+    // Direction
+    this.d = d;
     // G, H and F
     this.g = 0;
     this.h = 0;
