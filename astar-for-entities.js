@@ -2,7 +2,7 @@
 * astar-for-entities
 * https://github.com/hurik/impact-astar-for-entities
 *
-* v0.9.0
+* v0.9.1
 *
 * Created by Andreas Giemza on 2012-04-03.
 * Copyright (c) 2012 Andreas Giemza. All rights reserved.
@@ -22,7 +22,11 @@ defines(function() {
 ig.Entity.inject({
     path: null,
 
-    getPath: function(destinationX, destinationY) {
+    getPath: function(destinationX, destinationY, diagonalMovement) {
+        if (diagonalMovement == null) {
+            diagonalMovement = true;
+        }
+
         // Get the map information
         var mapWidth = ig.game.collisionMap.width,
             mapHeight = ig.game.collisionMap.height,
@@ -89,7 +93,6 @@ ig.Entity.inject({
                 // 0 stand for X and Y change
                 // 1 stands for X change
                 // 2 stand for Y change
-
                 // Get the direction
                 if (currentNode.x != closed[currentNode.p].x && currentNode.y != closed[currentNode.p].y) {
                     lastDirection = 0;
@@ -143,12 +146,18 @@ ig.Entity.inject({
             // 2 X 7
             // 3 5 8
             // 0 is ignored for start and end node
-
             direction = 0;
 
             // Now create all 8 neighbors of the node
             for (var dx = -1; dx <= 1; dx++) {
                 for (var dy = -1; dy <= 1; dy++) {
+                    if (!diagonalMovement) {
+                        // Skips checking of diagonals, when diagonalMovement is false
+                        if (Math.abs(dx) == Math.abs(dy)) {
+                            continue;
+                        }
+                    }
+
                     // Don't check the parent node, which is in the middle
                     if (dx == 0 && dy == 0) {
                         continue;
@@ -170,22 +179,22 @@ ig.Entity.inject({
                     }
 
                     // Only use the upper left node, when both neighbor are not a wall
-                    if (dx == -1 && dy == -1 && (map[currentNode.y - 1][currentNode.x] == 1 || map[currentNode.y][currentNode.x - 1] == 1)) {
+                    if (dx == -1 && dy == -1 && (map[currentNode.y - 1][currentNode.x] != 0 || map[currentNode.y][currentNode.x - 1] != 0)) {
                         continue;
                     }
 
                     // Only use the upper right node, when both neighbor are not a wall
-                    if (dx == 1 && dy == -1 && (map[currentNode.y - 1][currentNode.x] == 1 || map[currentNode.y][currentNode.x + 1] == 1)) {
+                    if (dx == 1 && dy == -1 && (map[currentNode.y - 1][currentNode.x] != 0 || map[currentNode.y][currentNode.x + 1] != 0)) {
                         continue;
                     }
 
                     // Only use the lower left node, when both neighbor are not a wall
-                    if (dx == -1 && dy == 1 && (map[currentNode.y][currentNode.x - 1] == 1 || map[currentNode.y + 1][currentNode.x] == 1)) {
+                    if (dx == -1 && dy == 1 && (map[currentNode.y][currentNode.x - 1] != 0 || map[currentNode.y + 1][currentNode.x] != 0)) {
                         continue;
                     }
 
                     // Only use the lower right node, when both neighbor are not a wall
-                    if (dx == 1 && dy == 1 && (map[currentNode.y][currentNode.x + 1] == 1 || map[currentNode.y + 1][currentNode.x] == 1)) {
+                    if (dx == 1 && dy == 1 && (map[currentNode.y][currentNode.x + 1] != 0 || map[currentNode.y + 1][currentNode.x] != 0)) {
                         continue;
                     }
 
@@ -197,15 +206,14 @@ ig.Entity.inject({
                         }
 
                         // Calculate the g value
-
                         if (currentNode.d == direction) {
                             // No direction change or current node is the start node
                             tempG = currentNode.g + Math.sqrt(Math.pow(newX - currentNode.x, 2) + Math.pow(newY - currentNode.y, 2));
                         } else {
                             // Direction changed, add malus of 1
-                            tempG = currentNode.g + Math.sqrt(Math.pow(newX - currentNode.x, 2) + Math.pow(newY - currentNode.y, 2)) + 1;
+                            tempG = currentNode.g + Math.sqrt(Math.pow(newX - currentNode.x, 2) + Math.pow(newY - currentNode.y, 2)) + 0.6;
                         }
-                        
+
                         // If it is smaller than the g value in the existing node, update the node
                         if (tempG < nodes[newX + ',' + newY].g) {
                             nodes[newX + ',' + newY].g = tempG;
@@ -228,9 +236,9 @@ ig.Entity.inject({
                         newNode.g = currentNode.g + Math.sqrt(Math.pow(newNode.x - currentNode.x, 2) + Math.pow(newNode.y - currentNode.y, 2));
                     } else {
                         // Direction changed, add malus of 1
-                        newNode.g = currentNode.g + Math.sqrt(Math.pow(newNode.x - currentNode.x, 2) + Math.pow(newNode.y - currentNode.y, 2)) + 1;
+                        newNode.g = currentNode.g + Math.sqrt(Math.pow(newNode.x - currentNode.x, 2) + Math.pow(newNode.y - currentNode.y, 2)) + 0.6;
                     }
-                    newNode.h = Math.sqrt(Math.pow(newNode.x - destinationNode.x, 2) + Math.pow(newNode.y - destinationNode.y, 2));
+                    newNode.h = Math.max(Math.abs(newNode.x - destinationNode.x), Math.abs(newNode.y - destinationNode.y));
                     newNode.f = newNode.g + newNode.h;
 
                     // And push it on the open list ...

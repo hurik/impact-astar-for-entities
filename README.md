@@ -37,6 +37,12 @@ To change the level or work with the code, add the missing impact libary files i
 
 
 ## Changelog
+#### v0.9.1
+* A* search algorithm
+    * No it is possible to deactivate diagonal movement (Example: getPath(destinationX, destinationY, false), default is true!) 
+    * The check for not cutting edges was improved
+    * Small G and H calculation changes
+
 ### v0.9.0
 * A* search algorithm
     * Added malus for direction change -> now nicer paths
