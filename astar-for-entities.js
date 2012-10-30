@@ -2,14 +2,16 @@
 * astar-for-entities
 * https://github.com/hurik/impact-astar-for-entities
 *
-* v0.9.2
+* v0.9.3
 *
 * Created by Andreas Giemza on 2012-04-03.
 * Copyright (c) 2012 Andreas Giemza. All rights reserved.
 *
+* Thanks to: 
+*
 * Based on: https://gist.github.com/994534
-* 			http://www.policyalmanac.org/games/aStarTutorial_de.html
-*			http://theory.stanford.edu/~amitp/GameProgramming/index.html
+*           http://www.policyalmanac.org/games/aStarTutorial_de.html
+*           http://theory.stanford.edu/~amitp/GameProgramming/index.html
 */
 
 ig.module(
@@ -22,7 +24,11 @@ defines(function() {
 
 ig.Entity.inject({
 	path: null,
-
+	headingDirection: 0,
+	// Heading direction values
+	// 1 4 6
+	// 2 0 7
+	// 3 5 8
 	getPath: function(destinationX, destinationY, diagonalMovement) {
 		if(diagonalMovement == null) {
 			diagonalMovement = true;
@@ -147,7 +153,7 @@ ig.Entity.inject({
 			// Also set the indicator to closed
 			currentNode.closed = true;
 
-			// Direction
+			// Directions
 			// 1 4 6
 			// 2 X 7
 			// 3 5 8
@@ -279,11 +285,16 @@ ig.Entity.inject({
 						}
 					}
 
-					// We use the diagonal distance heuristic
-					var h_diagonal = Math.min(Math.abs(newNode.x - destinationNode.x), Math.abs(newNode.y - destinationNode.y));
-					var h_straight = Math.abs(newNode.x - destinationNode.x) + Math.abs(newNode.y - destinationNode.y);
+					// If diagonalMovement is true, we use the diagonal distance heuristic
+					if(diagonalMovement) {
+						var h_diagonal = Math.min(Math.abs(newNode.x - destinationNode.x), Math.abs(newNode.y - destinationNode.y));
+						var h_straight = Math.abs(newNode.x - destinationNode.x) + Math.abs(newNode.y - destinationNode.y);
 
-					newNode.h = (diagonalMovementCosts * h_diagonal) + (h_straight - (2 * h_diagonal));
+						newNode.h = (diagonalMovementCosts * h_diagonal) + (h_straight - (2 * h_diagonal));
+					} else {
+						// If it is false, we use the manhattan distance heuristic
+						newNode.h = Math.abs(newNode.x - destinationNode.x) + Math.abs(newNode.y - destinationNode.y);
+					}
 
 					newNode.f = newNode.g + newNode.h;
 
@@ -344,10 +355,31 @@ ig.Entity.inject({
 			} else if(this.pos.y > this.path[0].y) {
 				this.vel.y = -speed;
 			}
+
+			// Get the heading direction
+			if(this.vel.x < 0 && this.vel.y < 0) {
+				this.headingDirection = 1;
+			} else if(this.vel.x < 0 && this.vel.y > 0) {
+				this.headingDirection = 3;
+			} else if(this.vel.x > 0 && this.vel.y < 0) {
+				this.headingDirection = 6;
+			} else if(this.vel.x > 0 && this.vel.y > 0) {
+				this.headingDirection = 8;
+			} else if(this.vel.x < 0) {
+				this.headingDirection = 2;
+			} else if(this.vel.x > 0) {
+				this.headingDirection = 7;
+			} else if(this.vel.y < 0) {
+				this.headingDirection = 4;
+			} else if(this.vel.y > 0) {
+				this.headingDirection = 5;
+			}
 		} else {
 			// When there is no path, don't move ...
 			this.vel.x = 0;
 			this.vel.y = 0;
+
+			this.headingDirection = 0;
 		}
 	},
 

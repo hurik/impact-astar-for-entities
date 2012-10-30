@@ -39,6 +39,12 @@ To change the level or work with the code, add the missing impact libary files i
 
 
 ## Changelog
+#### v0.9.3
+* A* search algorithm
+	* If diagonal movement is deactivated, it uses the manhattan distance heuristic
+* path following
+	* Heading direction is now saved in the headingDirection variable, for more information check the example
+
 #### v0.9.2
 * A* search algorithm
 	* Now using the diagonal distance heuristic
