@@ -15,19 +15,30 @@ Check out: [http://www.hurik.de/impact-astar-for-entities/](http://www.hurik.de/
 
 
 ## Example
-To change the level or work with the code, add the missing impact libary files in the example folder. And when you do it, don't overwrite the main.js.
-
+To change the level or work with the code, add in example folder the missing libary files and folders:
+```
+lib/weltmeister/
+lib/impact/
+tools/
+index.htmlw
+weltmeister.html
+```
 
 ## Example images
-#### With direction change malus
-![New example](/hurik/impact-astar-for-entities/raw/master/example_with_malus.png)
+#### New algorithm with different direction change malus for 45 degree and 90 degree
+![New example](/hurik/impact-astar-for-entities/raw/master/example_with_90degree_malus.png)
 
-15 direction changes
+15 direction changes but two 90 degree changes less
 
-#### Old algorithm without direction change malus
-![Example](/hurik/impact-astar-for-entities/raw/master/example.png)
+#### Old algorithm with direction change malus
+![Old example](/hurik/impact-astar-for-entities/raw/master/example_with_malus.png)
 
-22 direction changes (7 more!)
+14 direction changes
+
+#### First algorithm without direction change malus
+![Oldest Example](/hurik/impact-astar-for-entities/raw/master/example.png)
+
+22 direction changes (8 more!)
 
 
 ## TODO

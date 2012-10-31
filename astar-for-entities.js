@@ -1,18 +1,21 @@
-/**
-* astar-for-entities
-* https://github.com/hurik/impact-astar-for-entities
-*
-* v0.9.3
-*
-* Created by Andreas Giemza on 2012-04-03.
-* Copyright (c) 2012 Andreas Giemza. All rights reserved.
-*
-* Thanks to: 
-*
-* Based on: https://gist.github.com/994534
-*           http://www.policyalmanac.org/games/aStarTutorial_de.html
-*           http://theory.stanford.edu/~amitp/GameProgramming/index.html
-*/
+/*
+ * astar-for-entities
+ * https://github.com/hurik/impact-astar-for-entities
+ *
+ * v0.9.3
+ *
+ * Andreas Giemza
+ * andreas@giemza.net
+ * http://www.hurik.de/
+ *
+ * This work is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/.
+ *
+ * Thanks to: Joncom and FabienM (http://impactjs.com/forums/code/a-path-finder)
+ *
+ * Based on : https://gist.github.com/994534
+ *            http://www.policyalmanac.org/games/aStarTutorial_de.html
+ *            http://theory.stanford.edu/~amitp/GameProgramming/index.html
+ */
 
 ig.module(
 	'plugins.astar-for-entities'
@@ -29,6 +32,7 @@ ig.Entity.inject({
 	// 1 4 6
 	// 2 0 7
 	// 3 5 8
+	
 	getPath: function(destinationX, destinationY, diagonalMovement) {
 		if(diagonalMovement == null) {
 			diagonalMovement = true;

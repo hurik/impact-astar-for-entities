@@ -1,4 +1,5 @@
-example/lib
-example/tools
+example/lib/weltmeister/
+example/lib/impact/
+example/tools/
 example/index.html
 example/weltmeister.html
