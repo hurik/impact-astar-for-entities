@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v0.9.3
+ * v0.9.4
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -312,7 +312,48 @@ ig.Entity.inject({
 		this.path = null;
 	},
 
-	followPath: function(speed) {
+	followPath: function(speed, alignOnNearestTile) {
+		if(alignOnNearestTile == null) {
+			alignOnNearestTile = false;
+		}
+
+		// If the path was erased before the entity has gotten to his destination and stands between two tiles, this little check will adlign on nearest tile
+		if(!this.path && alignOnNearestTile) {
+			// Get the coordinates of the current tile
+			var cx = (this.pos.x / ig.game.collisionMap.tilesize).floor() * ig.game.collisionMap.tilesize,
+				cy = (this.pos.y / ig.game.collisionMap.tilesize).floor() * ig.game.collisionMap.tilesize;
+
+			// Check if our entity is align on it
+			if(cx != this.pos.x || cy != this.pos.y) {
+				// Get the x dinstance to the current tile
+				var dx = this.pos.x - cx,
+					dy = this.pos.y - cy;
+
+				// Get the y distance to the next tile
+				var dxp = cx + ig.game.collisionMap.tilesize - this.pos.x,
+					dyp = cy + ig.game.collisionMap.tilesize - this.pos.y;
+
+				// Choose the smaller distance
+				if (dx < dxp) {
+					var tx = cx;
+				} else {
+					var tx = cx + ig.game.collisionMap.tilesize;
+				}
+
+				if (dy < dyp) {
+					var ty = cy;
+				} else {
+					var ty = cy + ig.game.collisionMap.tilesize;
+				}
+
+				// Add it to the path
+				this.path = [{
+					x: tx,
+					y: ty
+				}];
+			}
+		}
+
 		// Only do something if there is a path ...
 		if(this.path) {
 			// Did we reached a waypoint?
