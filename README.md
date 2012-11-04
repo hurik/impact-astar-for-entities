@@ -50,9 +50,15 @@ weltmeister.html
 
 
 ## Changelog
-#### v0.9.3
+#### v0.9.4
 * path following
 	* alignOnNearestTile option was added: If the path was erased before the entity has gotten to his destination and stands between two tiles, this little check will adlign it on the nearest tile
+
+#### v0.9.3
+* A* search algorithm
+	* If diagonal movement is deactivated, it uses the manhattan distance heuristic
+* path following
+	* Heading direction is now saved in the headingDirection variable, for more information check the example
 
 #### v0.9.2
 * A* search algorithm
