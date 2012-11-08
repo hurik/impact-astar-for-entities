@@ -4,8 +4,8 @@ ig.module(
 .requires(
 	'impact.game',
 	
-	'impact.debug.debug',
-	'plugins.astar-for-entities-debug',
+	//'impact.debug.debug',
+	//'plugins.astar-for-entities-debug',
 	
 	'game.entities.player',
 	
@@ -21,10 +21,14 @@ MyGame = ig.Game.extend({
 		y: 0
 	},
 
+	player: null,
+
 	init: function() {
 		ig.input.bind(ig.KEY.MOUSE1, 'leftClick');
 
 		this.loadLevel(LevelExample);
+
+		this.player = ig.game.getEntitiesByType('EntityPlayer')[0];
 	},
 
 	update: function() {

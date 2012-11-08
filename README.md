@@ -1,17 +1,31 @@
 # Impact A* for Entities
 
 ## Information
-This plugin for the [Impact Game Engine](http://impactjs.com/) and added pathfinding to the entities. It also has a basic path following function, a example for path drawing function and a debug panel for showing the path of all entities. 
+This plugin for the [Impact Game Engine](http://impactjs.com/) adds pathfinding to the entities. It also has a basic path following function, a example for path drawing function and a debug panel for showing the path of all entities.
+
+Since version 1.0.0 it also can take also entity types into his calculation. But it is only realy working for fixed entities!
 
 More information in the [Impact Game Engine Forum](http://impactjs.com/forums/): http://impactjs.com/forums/code/a-path-finder
 
 
 ## Usage
-Check the example/lib/game/game.js and example/lib/game/entities/player.js!
+Check the example/lib/game/game.js, example/lib/game/entities/player.js, example/lib/game/entities/enemy.js and example/lib/game/entities/enemy2.js!
+
+### Info for the entityTypesArray and ignoreEntityArray options
+#### entityTypesArray
+It is an array! It wants the entity type as string! Example: ['EntityPlayer', 'EntityEnemy', ...]
+
+#### ignoreEntityArray
+Also an array! It wants references of the entity! Example: [this, enemey[0], ...]
 
 
-## Demo
+## Live demo
 Check out: [http://www.hurik.de/impact-astar-for-entities/](http://www.hurik.de/impact-astar-for-entities/)
+
+### Info
+* The green player is contoled by clicking on the maps. It can't go through the obstacles, except the one in the middle. Check the player.js how it works ...
+* The red enemy follows the player. Every 2 seconds it calculates the path to the player. It cannot pass every obstacle. Check the enemy.js how it works ...
+* The blue enemy follows the player. Every 4 seconds his path is updated. It can pass the obstacles and it cannot move diagonal. Check the enemy2.js how it works ...
 
 
 ## Example
@@ -25,31 +39,25 @@ weltmeister.html
 ```
 
 ## Example images
-#### New algorithm with different direction change malus for 45 degree and 90 degree
-![New example](/hurik/impact-astar-for-entities/raw/master/example_with_90degree_malus.png)
-
-15 direction changes but two 90 degree changes less
-
-#### Old algorithm with direction change malus
-![Old example](/hurik/impact-astar-for-entities/raw/master/example_with_malus.png)
-
-14 direction changes
-
-#### First algorithm without direction change malus
 ![Oldest Example](/hurik/impact-astar-for-entities/raw/master/example.png)
-
-22 direction changes (8 more!)
 
 
 ## TODO
 * A* search algorithm (getPath)
 	* Make it faster
 	* Add coordinated movement (For the future ...)
-* path following (followPath) (!!! Experimental !!!)
+* path following (followPath)
 	* Very much room for improvments ...
 
 
 ## Changelog
+### v1.0.0
+* path following
+	* Entity support
+* General
+	* Readme improved
+	* Example highly improved
+
 #### v0.9.4
 * path following
 	* alignOnNearestTile option was added: If the path was erased before the entity has gotten to his destination and stands between two tiles, this little check will adlign it on the nearest tile

@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v0.9.4
+ * v1.0.0
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -33,9 +33,17 @@ ig.Entity.inject({
 	// 2 0 7
 	// 3 5 8
 	
-	getPath: function(destinationX, destinationY, diagonalMovement) {
+	getPath: function(destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray) {
 		if(diagonalMovement == null) {
 			diagonalMovement = true;
+		}
+
+		if (entityTypesArray == null) {
+			entityTypesArray = [];
+		}
+		
+		if (ignoreEntityArray == null) {
+			ignoreEntityArray = [];
 		}
 
 		// Get the map information
@@ -49,19 +57,28 @@ ig.Entity.inject({
 			// Diagonal movement costs
 			diagonalMovementCosts = Math.sqrt(2);
 
+		this.getPathAddEraseEntities(true, entityTypesArray, ignoreEntityArray);
+
 		// Create the start and the destination as nodes
 		var startNode = new asfeNode((this.pos.x / mapTilesize).floor(), (this.pos.y / mapTilesize).floor(), -1, 0),
 			destinationNode = new asfeNode((destinationX / mapTilesize).floor(), (destinationY / mapTilesize).floor(), -1, 0);
 
-		// Quick check if the destination tile is free
-		if(map[destinationNode.y][destinationNode.x] != 0) {
+		// Check if the destination tile is not the start tile ...
+		if(destinationNode.x == startNode.x && destinationNode.y == startNode.y) {
 			this.path = null;
 			return;
 		}
 
-		// Check if the destination tile is not the start tile ...
-		if(destinationNode.x == startNode.x && destinationNode.y == startNode.y) {
+		// Add the entities to the collision map
+		this.getPathAddEraseEntities(true, entityTypesArray, ignoreEntityArray);
+
+		// Quick check if the destination tile is free
+		if(map[destinationNode.y][destinationNode.x] != 0) {
 			this.path = null;
+
+			// Erase the entities from the collision map						
+			this.getPathAddEraseEntities(false, entityTypesArray, ignoreEntityArray);
+
 			return;
 		}
 
@@ -124,6 +141,9 @@ ig.Entity.inject({
 
 					// Stop when you get to the start node ...
 					if(currentNode.p == -1) {
+						// Erase the entities from the collision map						
+						this.getPathAddEraseEntities(false, entityTypesArray, ignoreEntityArray);
+						
 						return;
 					}
 
@@ -310,7 +330,44 @@ ig.Entity.inject({
 
 		// No path found ...
 		this.path = null;
+		
+		// Erase the entities from the collision map	
+		this.getPathAddEraseEntities(false, entityTypesArray, ignoreEntityArray);
+
+		return;
 	},
+
+	getPathAddEraseEntities: function(addErase, entityTypesArray, ignoreEntityArray) {
+		var ignoreThisEntity;
+
+		// Add or erase the entity types to the collision map
+		// Go through the entityTypesArray
+		for(i = 0; i < entityTypesArray.length; i++) {
+			var entities = ig.game.getEntitiesByType(entityTypesArray[i]);
+
+			// Get every entity of this type
+			for(j = 0; j < entities.length; j++) {
+				ignoreThisEntity = false;
+
+				// Check if it is excludes from the the check
+				for(k = 0; k < ignoreEntityArray.length; k++) {
+					if(ignoreEntityArray[k].id == entities[j].id) {
+						ignoreThisEntity = true;
+					}
+				}
+
+				// Add or erase the entity to the collision map
+				if(!ignoreThisEntity) {
+					if(addErase && ig.game.collisionMap.data[(entities[j].pos.y/ ig.game.collisionMap.tilesize).floor()][(entities[j].pos.x/ ig.game.collisionMap.tilesize).floor()] == 0) {
+						ig.game.collisionMap.data[(entities[j].pos.y/ ig.game.collisionMap.tilesize).floor()][(entities[j].pos.x/ ig.game.collisionMap.tilesize).floor()] = 9999;
+					} else if (!addErase && ig.game.collisionMap.data[(entities[j].pos.y/ ig.game.collisionMap.tilesize).floor()][(entities[j].pos.x/ ig.game.collisionMap.tilesize).floor()] == 9999) {
+						ig.game.collisionMap.data[(entities[j].pos.y/ ig.game.collisionMap.tilesize).floor()][(entities[j].pos.x/ ig.game.collisionMap.tilesize).floor()] = 0;
+					}
+				}
+			}
+		}
+	},
+	
 
 	followPath: function(speed, alignOnNearestTile) {
 		if(alignOnNearestTile == null) {

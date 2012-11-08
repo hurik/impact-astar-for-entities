@@ -7,8 +7,6 @@ ig.module(
 .defines(function(){
 
 EntityPlayer = ig.Entity.extend({
-	collides: ig.Entity.COLLIDES.ACTIVE,
-
 	size: {
 		x: 8,
 		y: 8
@@ -27,12 +25,21 @@ EntityPlayer = ig.Entity.extend({
 
 	update: function() {
 		if(ig.input.pressed('leftClick')) {
+			// Get the obstacle in the middle
+			var obstacles = ig.game.getEntitiesByType('EntityObstacle');
+
+			for (var c = 0; c < obstacles.length; c++) {
+				if (obstacles[c].pos.x == 224 && obstacles[c].pos.y == 128) {
+					var exampleObstacle = obstacles[c];
+				}
+			}
+
 			// Get the path
-			this.getPath(ig.input.mouse.x + ig.game.screen.x, ig.input.mouse.y + ig.game.screen.y);
+			this.getPath(ig.input.mouse.x + ig.game.screen.x, ig.input.mouse.y + ig.game.screen.y, true, ['EntityObstacle'], [exampleObstacle]);
 		}
 
 		// Walk the path
-		this.followPath(this.speed);
+		this.followPath(this.speed, true);
 
 		// Update the animation
 		this.currentAnim.gotoFrame(this.headingDirection);
