@@ -26,7 +26,8 @@ ig.module(
 defines(function() {
 
 ig.Entity.inject({
-	path: null,
+    path: null,
+    maxMovement: -1,
 	headingDirection: 0,
 	// Heading direction values
 	// 1 4 6
@@ -34,7 +35,9 @@ ig.Entity.inject({
 	// 3 5 8
 	
 	getPath: function(destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray) {
-		if(diagonalMovement == null) {
+	    var self = this;
+
+	    if (diagonalMovement == null) {
 			diagonalMovement = true;
 		}
 
@@ -142,7 +145,12 @@ ig.Entity.inject({
 					// Stop when you get to the start node ...
 					if(currentNode.p == -1) {
 						// Erase the entities from the collision map						
-						this.getPathAddEraseEntities(false, entityTypesArray, ignoreEntityArray);
+					    this.getPathAddEraseEntities(false, entityTypesArray, ignoreEntityArray);
+
+					    // added for limiting the movement path only be as long as the maxMovement... Chadrick
+					    if (self.maxMovement > -1 && self.getPathLength() > self.maxMovement) {
+					        self.createNewLimitedPath();
+					    }
 						
 						return;
 					}
@@ -335,6 +343,56 @@ ig.Entity.inject({
 		this.getPathAddEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 		return;
+	},
+
+	getPathLength: function () {
+	    var distance = 0;
+	    if (this.path) {
+	        var prevWaypoint = this.pos;
+	        for (var i = 0; i < this.path.length; i++) {
+	            if (this.path[i]) {
+	                var currentWaypoint = this.path[i];
+	                distance += ig.game.mathUtil.distanceTo(prevWaypoint, currentWaypoint);
+	                prevWaypoint = currentWaypoint;
+	            }
+	        }
+	    }
+
+	    return distance;
+	},
+
+	createNewLimitedPath: function () {
+	    var self = this;
+	    var newPath = new Array();
+	    var distance = 0;
+	    // make sure we have a path
+	    if (this.path) {
+	        // set the starting waypoint at the unit's current position
+	        var prevWaypoint = this.pos;
+	        // go through each waypoint and determin the length
+	        for (var i = 0; i < this.path.length; i++) {
+	            // make sure we have a waypoint
+	            if (this.path[i]) {
+	                var currentWaypoint = this.path[i];
+	                // get the new distance after adding the current waypoint
+	                var newDistance = distance + ig.game.mathUtil.distanceTo(prevWaypoint, currentWaypoint);
+	                if (newDistance > self.maxMovement) {
+	                    // new distance is too far so we get a new point at the maxMovement distance for the unit and push it on the newPath.
+	                    var newWayPointLength = self.maxMovement - distance;
+	                    var newMaxMovementLastWaypoint = ig.game.mathUtil.getPointSomeDistanceFromStart(prevWaypoint, currentWaypoint, newWayPointLength);
+	                    newPath.push(newMaxMovementLastWaypoint);
+	                    break;
+	                } else {
+	                    distance += ig.game.mathUtil.distanceTo(prevWaypoint, currentWaypoint);
+	                    newPath.push(currentWaypoint);
+	                }
+	                prevWaypoint = currentWaypoint;
+	            }
+	        }
+	    }
+
+	    self.path = newPath;
+	    return;
 	},
 
 	getPathAddEraseEntities: function(addErase, entityTypesArray, ignoreEntityArray) {

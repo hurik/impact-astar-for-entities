@@ -13,6 +13,7 @@ EntityPlayer = ig.Entity.extend({
 	},
 
 	speed: 50,
+	maxMovement: 200,
 
 	animSheet: new ig.AnimationSheet('media/player.png', 8, 8),
 
