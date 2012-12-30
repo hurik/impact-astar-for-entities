@@ -11,7 +11,8 @@ ig.module(
 	
 	'game.levels.example',
 	
-	'plugins.astar-for-entities'	
+	'plugins.astar-for-entities',
+    'game.utils.math'
 )
 .defines(function(){
 
@@ -22,6 +23,7 @@ MyGame = ig.Game.extend({
 	},
 
 	player: null,
+	mathUtil: null,
 
 	init: function() {
 		ig.input.bind(ig.KEY.MOUSE1, 'leftClick');
@@ -29,6 +31,7 @@ MyGame = ig.Game.extend({
 		this.loadLevel(LevelExample);
 
 		this.player = ig.game.getEntitiesByType('EntityPlayer')[0];
+	    this.mathUtil = new MathUtil();
 	},
 
 	update: function() {
