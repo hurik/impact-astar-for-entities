@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v0.9.3
+ * v1.1.0
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -10,11 +10,13 @@
  *
  * This work is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/.
  *
- * Thanks to: Joncom and FabienM (http://impactjs.com/forums/code/a-path-finder)
+ * Thanks to: - Joncom and FabienM (http://impactjs.com/forums/code/a-path-finder)
+ *            - docmarionum1 (Teleportation bug)
+ *            - tmfkmoney (Support for obsticles which are bigger than the tilesize)
  *
- * Based on : https://gist.github.com/994534
- *            http://www.policyalmanac.org/games/aStarTutorial_de.html
- *            http://theory.stanford.edu/~amitp/GameProgramming/index.html
+ * Based on : - https://gist.github.com/994534
+ *            - http://www.policyalmanac.org/games/aStarTutorial_de.html
+ *            - http://theory.stanford.edu/~amitp/GameProgramming/index.html
  */
 
 ig.module( 
