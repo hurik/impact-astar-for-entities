@@ -4,8 +4,8 @@ ig.module(
 .requires(
 	'impact.game',
 	
-	//'impact.debug.debug',
-	//'plugins.astar-for-entities-debug',
+	'impact.debug.debug',
+	'plugins.astar-for-entities-debug',
 	
 	'game.entities.player',
 	

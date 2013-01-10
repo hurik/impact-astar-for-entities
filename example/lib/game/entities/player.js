@@ -28,14 +28,14 @@ EntityPlayer = ig.Entity.extend({
 			// Get the obstacle in the middle
 			var obstacles = ig.game.getEntitiesByType('EntityObstacle');
 
-			for (var c = 0; c < obstacles.length; c++) {
-				if (obstacles[c].pos.x == 224 && obstacles[c].pos.y == 128) {
+			for(var c = 0; c < obstacles.length; c++) {
+				if(obstacles[c].pos.x == 224 && obstacles[c].pos.y == 128) {
 					var exampleObstacle = obstacles[c];
 				}
 			}
 
 			// Get the path
-			this.getPath(ig.input.mouse.x + ig.game.screen.x, ig.input.mouse.y + ig.game.screen.y, true, ['EntityObstacle'], [exampleObstacle]);
+			this.getPath(ig.input.mouse.x + ig.game.screen.x, ig.input.mouse.y + ig.game.screen.y, true, ['EntityObstacle', 'EntityObstacle2', 'EntityObstacle3'], [exampleObstacle]);
 		}
 
 		// Walk the path
@@ -48,7 +48,6 @@ EntityPlayer = ig.Entity.extend({
 		// 1 4 6
 		// 2 0 7
 		// 3 5 8
-
 		this.parent();
 	},
 

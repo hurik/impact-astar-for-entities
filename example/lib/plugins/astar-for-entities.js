@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.0.0
+ * v1.1.0
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -10,11 +10,13 @@
  *
  * This work is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/.
  *
- * Thanks to: Joncom and FabienM (http://impactjs.com/forums/code/a-path-finder)
+ * Thanks to: - Joncom and FabienM (http://impactjs.com/forums/code/a-path-finder)
+ *            - docmarionum1 (Teleportation bug)
+ *            - tmfkmoney (Support for obsticles which are bigger than the tilesize)
  *
- * Based on : https://gist.github.com/994534
- *            http://www.policyalmanac.org/games/aStarTutorial_de.html
- *            http://theory.stanford.edu/~amitp/GameProgramming/index.html
+ * Based on : - https://gist.github.com/994534
+ *            - http://www.policyalmanac.org/games/aStarTutorial_de.html
+ *            - http://theory.stanford.edu/~amitp/GameProgramming/index.html
  */
 
 ig.module(
@@ -32,17 +34,16 @@ ig.Entity.inject({
 	// 1 4 6
 	// 2 0 7
 	// 3 5 8
-	
 	getPath: function(destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray) {
 		if(diagonalMovement == null) {
 			diagonalMovement = true;
 		}
 
-		if (entityTypesArray == null) {
+		if(entityTypesArray == null) {
 			entityTypesArray = [];
 		}
-		
-		if (ignoreEntityArray == null) {
+
+		if(ignoreEntityArray == null) {
 			ignoreEntityArray = [];
 		}
 
@@ -57,7 +58,8 @@ ig.Entity.inject({
 			// Diagonal movement costs
 			diagonalMovementCosts = Math.sqrt(2);
 
-		this.getPathAddEraseEntities(true, entityTypesArray, ignoreEntityArray);
+		// Add the entities to the collision map
+		this._addEraseEntities(true, entityTypesArray, ignoreEntityArray);
 
 		// Create the start and the destination as nodes
 		var startNode = new asfeNode((this.pos.x / mapTilesize).floor(), (this.pos.y / mapTilesize).floor(), -1, 0),
@@ -66,18 +68,19 @@ ig.Entity.inject({
 		// Check if the destination tile is not the start tile ...
 		if(destinationNode.x == startNode.x && destinationNode.y == startNode.y) {
 			this.path = null;
+
+			// Erase the entities from the collision map						
+			this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
+
 			return;
 		}
-
-		// Add the entities to the collision map
-		this.getPathAddEraseEntities(true, entityTypesArray, ignoreEntityArray);
 
 		// Quick check if the destination tile is free
 		if(map[destinationNode.y][destinationNode.x] != 0) {
 			this.path = null;
 
 			// Erase the entities from the collision map						
-			this.getPathAddEraseEntities(false, entityTypesArray, ignoreEntityArray);
+			this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 			return;
 		}
@@ -142,8 +145,8 @@ ig.Entity.inject({
 					// Stop when you get to the start node ...
 					if(currentNode.p == -1) {
 						// Erase the entities from the collision map						
-						this.getPathAddEraseEntities(false, entityTypesArray, ignoreEntityArray);
-						
+						this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
+
 						return;
 					}
 
@@ -330,14 +333,14 @@ ig.Entity.inject({
 
 		// No path found ...
 		this.path = null;
-		
+
 		// Erase the entities from the collision map	
-		this.getPathAddEraseEntities(false, entityTypesArray, ignoreEntityArray);
+		this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 		return;
 	},
 
-	getPathAddEraseEntities: function(addErase, entityTypesArray, ignoreEntityArray) {
+	_addEraseEntities: function(addErase, entityTypesArray, ignoreEntityArray) {
 		var ignoreThisEntity;
 
 		// Add or erase the entity types to the collision map
@@ -358,16 +361,22 @@ ig.Entity.inject({
 
 				// Add or erase the entity to the collision map
 				if(!ignoreThisEntity) {
-					if(addErase && ig.game.collisionMap.data[(entities[j].pos.y/ ig.game.collisionMap.tilesize).floor()][(entities[j].pos.x/ ig.game.collisionMap.tilesize).floor()] == 0) {
-						ig.game.collisionMap.data[(entities[j].pos.y/ ig.game.collisionMap.tilesize).floor()][(entities[j].pos.x/ ig.game.collisionMap.tilesize).floor()] = 9999;
-					} else if (!addErase && ig.game.collisionMap.data[(entities[j].pos.y/ ig.game.collisionMap.tilesize).floor()][(entities[j].pos.x/ ig.game.collisionMap.tilesize).floor()] == 9999) {
-						ig.game.collisionMap.data[(entities[j].pos.y/ ig.game.collisionMap.tilesize).floor()][(entities[j].pos.x/ ig.game.collisionMap.tilesize).floor()] = 0;
+					var sizeX = (entities[j].size.x / ig.game.collisionMap.tilesize).floor();
+					var sizeY = (entities[j].size.y / ig.game.collisionMap.tilesize).floor();
+
+					for(k = 0; k < sizeX; k++) {
+						for(l = 0; l < sizeY; l++) {
+							if(addErase && ig.game.collisionMap.data[(entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l][(entities[j].pos.x / ig.game.collisionMap.tilesize).floor() + k] == 0) {
+								ig.game.collisionMap.data[(entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l][(entities[j].pos.x / ig.game.collisionMap.tilesize).floor() + k] = 9999;
+							} else if(!addErase && ig.game.collisionMap.data[(entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l][(entities[j].pos.x / ig.game.collisionMap.tilesize).floor() + k] == 9999) {
+								ig.game.collisionMap.data[(entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l][(entities[j].pos.x / ig.game.collisionMap.tilesize).floor() + k] = 0;
+							}
+						}
 					}
 				}
 			}
 		}
 	},
-	
 
 	followPath: function(speed, alignOnNearestTile) {
 		if(alignOnNearestTile == null) {
@@ -391,13 +400,13 @@ ig.Entity.inject({
 					dyp = cy + ig.game.collisionMap.tilesize - this.pos.y;
 
 				// Choose the smaller distance
-				if (dx < dxp) {
+				if(dx < dxp) {
 					var tx = cx;
 				} else {
 					var tx = cx + ig.game.collisionMap.tilesize;
 				}
 
-				if (dy < dyp) {
+				if(dy < dyp) {
 					var ty = cy;
 				} else {
 					var ty = cy + ig.game.collisionMap.tilesize;
@@ -505,6 +514,15 @@ ig.Entity.inject({
 			ig.system.context.stroke();
 			ig.system.context.closePath();
 		}
+	},
+
+	// Fix by docmarionum1 for the teleportation bug
+	init: function(x, y, settings) {
+		this.parent(x, y, settings);
+		this.last = {
+			x: x,
+			y: y
+		};
 	}
 });
 

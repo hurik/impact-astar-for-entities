@@ -31,7 +31,7 @@ EntityEnemy2 = ig.Entity.extend({
 		// Update it every 4 seconds
 		if(this.pathTimer.delta() > 0) {
 			// Get the path to the player
-			this.getPath(ig.game.player.pos.x, ig.game.player.pos.y, false, [], []);
+			this.getPath(ig.game.player.pos.x, ig.game.player.pos.y, false);
 
 			this.pathTimer.reset();
 		}
@@ -46,7 +46,6 @@ EntityEnemy2 = ig.Entity.extend({
 		// 1 4 6
 		// 2 0 7
 		// 3 5 8
-
 		this.parent();
 	},
 

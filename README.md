@@ -38,6 +38,7 @@ index.htmlw
 weltmeister.html
 ```
 
+
 ## Example images
 ![Oldest Example](/hurik/impact-astar-for-entities/raw/master/example.png)
 
@@ -51,37 +52,43 @@ weltmeister.html
 
 
 ## Changelog
-### v1.0.0
+#### v1.1.0
+* A* search algorithm
+	* Support for entities which are bigger than the tilesize, should be a multiple ... (Thanks to tmfkmoney)
 * path following
+	* Fix for teleportion bug (Thanks to docmarionum1)
+
+### v1.0.0
+* A* search algorithm
 	* Entity support
 * General
 	* Readme improved
 	* Example highly improved
 
-#### v0.9.4
+##### v0.9.4
 * path following
 	* alignOnNearestTile option was added: If the path was erased before the entity has gotten to his destination and stands between two tiles, this little check will adlign it on the nearest tile
 
-#### v0.9.3
+##### v0.9.3
 * A* search algorithm
 	* If diagonal movement is deactivated, it uses the manhattan distance heuristic
 * path following
 	* Heading direction is now saved in the headingDirection variable, for more information check the example
 
-#### v0.9.2
+##### v0.9.2
 * A* search algorithm
 	* Now using the diagonal distance heuristic
 	* Added seperate maluses for 45 degress an 90 degree direction changes, still testing for good values for the maluses
 * General
 	* Converted indentation to tabs
 
-#### v0.9.1
+##### v0.9.1
 * A* search algorithm
 	* No it is possible to deactivate diagonal movement (Example: getPath(destinationX, destinationY, false), default is true!) 
 	* The check for not cutting edges was improved
 	* Small G and H calculation changes
 
-### v0.9.0
+#### v0.9.0
 * A* search algorithm
 	* Added malus for direction change -> now nicer paths
 * General
@@ -89,7 +96,7 @@ weltmeister.html
 	* Example demo updated the new code
 	* Readme improved
 
-#### v0.8.3
+##### v0.8.3
 * A* search algorithm
 	* Path now only saves the nodes, when the walking direction changed (Much less path points)
 * path drawing
@@ -97,41 +104,41 @@ weltmeister.html
 * General
 	* Example image changed
 
-#### v0.8.2
+##### v0.8.2
 * General
 	* Example image changed
 	* Readme improved
 
-#### v0.8.1
+##### v0.8.1
 * General
 	* Little example demo update
 
-### v0.8.0
+#### v0.8.0
 * General
 	* Added example
 
-### v0.7.0
+#### v0.7.0
 * A* search algorithm
 	* Now calculates the real distances, working with even numbers wasn't faster
 * path drawing
 	* Basic function added, only as an example for a possible implematation
 
-### v0.6.0
+#### v0.6.0
 * A* search algorithm
 	* Checks now for walkable tiles and not for walls, no more problems with slopes anymore 
 * path following
 	* Added entity movement stop when there is no path
 	* No rounding anymore for diagonal movments speed calculation (Doesn't impact the framerate)
 
-#### v0.5.2
+##### v0.5.2
 * path following
 	* followPath now really working, but still far from perfect ...
 
-#### v0.5.1
+##### v0.5.1
 * path following
 	* followPath working for low framrates but FAR from a good implementation
 
-### v0.5.0
+#### v0.5.0
 * General
 	* Added version numbering
 	* New example image
