@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.1.0
+ * v1.2.0
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -10,9 +10,13 @@
  *
  * This work is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/.
  *
- * Thanks to: - Joncom and FabienM (http://impactjs.com/forums/code/a-path-finder)
+ * It would be very nice when you inform me with an short email when you are using this plugin in a project.
+ *
+ * Thanks to: - Joncom (Deactivate diagonal movement)
+ *            - FabienM (Heading Direction)
  *            - docmarionum1 (Teleportation bug)
  *            - tmfkmoney (Support for obsticles which are bigger than the tilesize)
+ *            - chadrickm (Max movement)
  *
  * Based on : - https://gist.github.com/994534
  *            - http://www.policyalmanac.org/games/aStarTutorial_de.html
@@ -29,11 +33,19 @@ defines(function() {
 
 ig.Entity.inject({
 	path: null,
+
 	headingDirection: 0,
 	// Heading direction values
 	// 1 4 6
 	// 2 0 7
 	// 3 5 8
+	maxMovementActive: false,
+	maxMovement: 200,
+
+	// Direction change maluses
+	directionChangeMalus45degree: 2,
+	directionChangeMalus90degree: 5,
+
 	getPath: function(destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray) {
 		if(diagonalMovement == null) {
 			diagonalMovement = true;
@@ -52,9 +64,6 @@ ig.Entity.inject({
 			mapHeight = ig.game.collisionMap.height,
 			mapTilesize = ig.game.collisionMap.tilesize,
 			map = ig.game.collisionMap.data,
-			// Direction change maluses
-			directionChangeMalus45degree = 2,
-			directionChangeMalus90degree = 5,
 			// Diagonal movement costs
 			diagonalMovementCosts = Math.sqrt(2);
 
@@ -146,6 +155,12 @@ ig.Entity.inject({
 					if(currentNode.p == -1) {
 						// Erase the entities from the collision map						
 						this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
+
+
+						// added for limiting the movement path only be as long as the maxMovement... Chadrick
+						if(this.maxMovement > 0 && this._getPathLength() > this.maxMovement && this.maxMovementActive) {
+							this._createNewLimitedPath();
+						}
 
 						return;
 					}
@@ -250,23 +265,23 @@ ig.Entity.inject({
 						// When the direction changed
 						if(currentNode.d != direction) {
 							if(currentNode.d == 1 && (direction == 2 || direction == 4)) {
-								tempG = tempG + directionChangeMalus45degree;
+								tempG = tempG + this.directionChangeMalus45degree;
 							} else if(currentNode.d == 2 && (direction == 1 || direction == 3)) {
-								tempG = tempG + directionChangeMalus45degree;
+								tempG = tempG + this.directionChangeMalus45degree;
 							} else if(currentNode.d == 3 && (direction == 2 || direction == 5)) {
-								tempG = tempG + directionChangeMalus45degree;
+								tempG = tempG + this.directionChangeMalus45degree;
 							} else if(currentNode.d == 4 && (direction == 1 || direction == 6)) {
-								tempG = tempG + directionChangeMalus45degree;
+								tempG = tempG + this.directionChangeMalus45degree;
 							} else if(currentNode.d == 5 && (direction == 3 || direction == 8)) {
-								tempG = tempG + directionChangeMalus45degree;
+								tempG = tempG + this.directionChangeMalus45degree;
 							} else if(currentNode.d == 6 && (direction == 4 || direction == 7)) {
-								tempG = tempG + directionChangeMalus45degree;
+								tempG = tempG + this.directionChangeMalus45degree;
 							} else if(currentNode.d == 7 && (direction == 6 || direction == 8)) {
-								tempG = tempG + directionChangeMalus45degree;
+								tempG = tempG + this.directionChangeMalus45degree;
 							} else if(currentNode.d == 8 && (direction == 5 || direction == 7)) {
-								tempG = tempG + directionChangeMalus45degree;
+								tempG = tempG + this.directionChangeMalus45degree;
 							} else {
-								tempG = tempG + directionChangeMalus90degree;
+								tempG = tempG + this.directionChangeMalus90degree;
 							}
 						}
 
@@ -292,23 +307,23 @@ ig.Entity.inject({
 					// When the direction changed
 					if(currentNode.d != newNode.d && currentNode.d != 0) {
 						if(currentNode.d == 1 && (newNode.d == 2 || newNode.d == 4)) {
-							newNode.g = newNode.g + directionChangeMalus45degree;
+							newNode.g = newNode.g + this.directionChangeMalus45degree;
 						} else if(currentNode.d == 2 && (newNode.d == 1 || newNode.d == 3)) {
-							newNode.g = newNode.g + directionChangeMalus45degree;
+							newNode.g = newNode.g + this.directionChangeMalus45degree;
 						} else if(currentNode.d == 3 && (newNode.d == 2 || newNode.d == 5)) {
-							newNode.g = newNode.g + directionChangeMalus45degree;
+							newNode.g = newNode.g + this.directionChangeMalus45degree;
 						} else if(currentNode.d == 4 && (newNode.d == 1 || newNode.d == 6)) {
-							newNode.g = newNode.g + directionChangeMalus45degree;
+							newNode.g = newNode.g + this.directionChangeMalus45degree;
 						} else if(currentNode.d == 5 && (newNode.d == 3 || newNode.d == 8)) {
-							newNode.g = newNode.g + directionChangeMalus45degree;
+							newNode.g = newNode.g + this.directionChangeMalus45degree;
 						} else if(currentNode.d == 6 && (newNode.d == 4 || newNode.d == 7)) {
-							newNode.g = newNode.g + directionChangeMalus45degree;
+							newNode.g = newNode.g + this.directionChangeMalus45degree;
 						} else if(currentNode.d == 7 && (newNode.d == 6 || newNode.d == 8)) {
-							newNode.g = newNode.g + directionChangeMalus45degree;
+							newNode.g = newNode.g + this.directionChangeMalus45degree;
 						} else if(currentNode.d == 8 && (newNode.d == 5 || newNode.d == 7)) {
-							newNode.g = newNode.g + directionChangeMalus45degree;
+							newNode.g = newNode.g + this.directionChangeMalus45degree;
 						} else {
-							newNode.g = newNode.g + directionChangeMalus90degree;
+							newNode.g = newNode.g + this.directionChangeMalus90degree;
 						}
 					}
 
@@ -378,6 +393,91 @@ ig.Entity.inject({
 		}
 	},
 
+	// ----- Max movement by Chadrick ----- START -----
+	_getPathLength: function() {
+		var distance = 0;
+
+		if(this.path) {
+			var prevWaypoint = this.pos;
+
+			for(var i = 0; i < this.path.length; i++) {
+				if(this.path[i]) {
+					var currentWaypoint = this.path[i];
+
+					distance += this._distanceTo(prevWaypoint, currentWaypoint);
+					prevWaypoint = currentWaypoint;
+				}
+			}
+		}
+
+		return distance;
+	},
+
+	_createNewLimitedPath: function() {
+		var newPath = new Array();
+		var distance = 0;
+
+		// make sure we have a path
+		if(this.path) {
+			// set the starting waypoint at the unit's current position
+			var prevWaypoint = this.pos;
+			// go through each waypoint and determin the length
+			for(var i = 0; i < this.path.length; i++) {
+				// make sure we have a waypoint
+				if(this.path[i]) {
+					var currentWaypoint = this.path[i];
+
+					// get the new distance after adding the current waypoint
+					var newDistance = distance + this._distanceTo(prevWaypoint, currentWaypoint);
+
+					if(newDistance > this.maxMovement) {
+						// new distance is too far so we get a new point at the maxMovement distance for the unit and push it on the newPath.
+						var newWayPointLength = this.maxMovement - distance;
+						var newMaxMovementLastWaypoint = this._getPointSomeDistanceFromStart(prevWaypoint, currentWaypoint, newWayPointLength);
+
+						newPath.push(newMaxMovementLastWaypoint);
+						break;
+					} else {
+						distance += this._distanceTo(prevWaypoint, currentWaypoint);
+						newPath.push(currentWaypoint);
+					}
+					prevWaypoint = currentWaypoint;
+				}
+			}
+		}
+
+		this.path = newPath;
+
+		return;
+	},
+
+	_distanceTo: function(p1, p2) {
+		var distSquared = Math.sqrt(Math.pow((p1.x - p2.x), 2) + Math.pow((p1.y - p2.y), 2));
+		return distSquared;
+	},
+
+	_getPointSomeDistanceFromStart: function(startPos, endPos, distanceFromStart) {
+		var totalDistance = this._distanceTo(startPos, endPos);
+
+		var totalDelta = {
+			x: endPos.x - startPos.x,
+			y: endPos.y - startPos.y
+		};
+
+		var percent = distanceFromStart / totalDistance;
+
+		var delta = {
+			x: totalDelta.x * percent,
+			y: totalDelta.y * percent
+		};
+
+		return {
+			x: startPos.x + delta.x,
+			y: startPos.y + delta.y
+		};
+	},
+
+	// ----- Max movement by Chadrick ----- END -----
 	followPath: function(speed, alignOnNearestTile) {
 		if(alignOnNearestTile == null) {
 			alignOnNearestTile = false;
@@ -493,6 +593,7 @@ ig.Entity.inject({
 			this.headingDirection = 0;
 		}
 	},
+
 
 	drawPath: function(r, g, b, a, lineWidth) {
 		if(this.path) {

@@ -23,8 +23,13 @@ MyGame = ig.Game.extend({
 
 	player: null,
 
+	font: new ig.Font('media/font.png'),
+
 	init: function() {
 		ig.input.bind(ig.KEY.MOUSE1, 'leftClick');
+		ig.input.bind(ig.KEY.R, 'keyR');
+		ig.input.bind(ig.KEY.F, 'keyF');
+		ig.input.bind(ig.KEY.G, 'keyG');
 
 		this.loadLevel(LevelExample);
 
@@ -38,6 +43,6 @@ MyGame = ig.Game.extend({
 
 // Start the Game with 60fps, a resolution of 320x240, scaled
 // up by a factor of 2
-ig.main('#canvas', MyGame, 60, 400, 200, 1);
+ig.main('#canvas', MyGame, 60, 400, 200, 2);
 
 });

@@ -1,8 +1,8 @@
 /*
- * astar-for-entities
+ * astar-for-entities-debug
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.1.0
+ * v1.2.0
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -10,9 +10,13 @@
  *
  * This work is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/.
  *
- * Thanks to: - Joncom and FabienM (http://impactjs.com/forums/code/a-path-finder)
+ * It would be very nice when you inform me with an short email when you are using this plugin in a project.
+ *
+ * Thanks to: - Joncom (Deactivate diagonal movement)
+ *            - FabienM (Heading Direction)
  *            - docmarionum1 (Teleportation bug)
  *            - tmfkmoney (Support for obsticles which are bigger than the tilesize)
+ *            - chadrickm (Max movement)
  *
  * Based on : - https://gist.github.com/994534
  *            - http://www.policyalmanac.org/games/aStarTutorial_de.html

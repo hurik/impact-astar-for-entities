@@ -3,33 +3,95 @@
 ## Information
 This plugin for the [Impact Game Engine](http://impactjs.com/) adds pathfinding to the entities. It also has a basic path following function, a example for path drawing function and a debug panel for showing the path of all entities.
 
-Since version 1.0.0 it also can take also entity types into his calculation. But it is only realy working for fixed entities!
+Since version 1.0.0 it also can take also entity types into his calculation. But it is only realy working for fixed obsticles.
+
+*Attention:*
+* The entities must be aligned with a tile and
+* the size must be an multiple if the tilesize.
 
 More information in the [Impact Game Engine Forum](http://impactjs.com/forums/): http://impactjs.com/forums/code/a-path-finder
 
 
 ## Usage
-Check the example/lib/game/game.js, example/lib/game/entities/player.js, example/lib/game/entities/enemy.js and example/lib/game/entities/enemy2.js!
+Check the `example/lib/game/game.js`, `example/lib/game/entities/player.js`, `example/lib/game/entities/enemy.js` and `example/lib/game/entities/enemy2.js`!
 
-### Info for the entityTypesArray and ignoreEntityArray options
-#### entityTypesArray
-It is an array! It wants the entity type as string! Example: ['EntityPlayer', 'EntityEnemy', ...]
+**getPath(destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray)**
 
-#### ignoreEntityArray
-Also an array! It wants references of the entity! Example: [this, enemey[0], ...]
+Calculates the path and the the result will be saved in `this.path`.
+
+Since version 1.2.0 you also can activate the max movement with `this.maxMovementActive`. The lenght of the path can be modified with `this.maxMovement`. But you should deactivatee the `this.directionChangeMalus45degree` and `this.directionChangeMalus90degree` malus (Set it to zero ...) to prevent strange paths. Check the `example/lib/game/entities/player.js` for more information ...
+
+* destinationX and destinationY
+
+	The destination ...
+
+* diagonalMovement
+
+	If true diagonal movement is activated (Default) and when false it isn't.
+
+* entityTypesArray
+
+	It is an array! It wants the entity type as string! Example: ['EntityPlayer', 'EntityEnemy', ...]
+
+* ignoreEntityArray
+
+	Also an array! It wants references of the entities you want to exclude from the including into the collision map! Example: [this, enemey[0], ...]
+
+**followPath(speed, alignOnNearestTile)**
+
+Follows the calculated path. The current heading direction will be saved in `this.headingDirection`.
+
+Heading direction values:
+```
+1 4 6
+2 0 7
+3 5 8
+```
+
+* speed
+
+	The velocity which will be used to follow the path.
+
+* alignOnNearestTile
+
+	If activated (true) and the entity stops between tiles, it will automatically align on the nearest tile.
+
+**drawPath(r, g, b, a, lineWidth)**
+
+Draw the calculated path.
+
+* r, g and b
+
+	The color of the path.
+
+* a
+
+	Alpha value of the color.
+
+* lineWidth
+
+	The width of the line ...
 
 
 ## Live demo
 Check out: [http://www.hurik.de/impact-astar-for-entities/](http://www.hurik.de/impact-astar-for-entities/)
 
 ### Info
-* The green player is contoled by clicking on the maps. It can't go through the obstacles, except the one in the middle. Check the player.js how it works ...
-* The red enemy follows the player. Every 2 seconds it calculates the path to the player. It cannot pass every obstacle. Check the enemy.js how it works ...
-* The blue enemy follows the player. Every 4 seconds his path is updated. It can pass the obstacles and it cannot move diagonal. Check the enemy2.js how it works ...
+* Green player
+
+	is controled by clicking on the maps. It can't go through the obstacles, except the one in the middle. Check the player.js how it works ...
+
+* Red enemy
+
+	follows the player. Every 2 seconds it calculates the path to the player. It cannot pass every obstacle. Check the enemy.js how it works ...
+
+* Blue enemy
+
+	follows the player. Every 4 seconds his path is updated. It can pass the obstacles and it cannot move diagonal. Check the enemy2.js how it works ...
 
 
 ## Example
-To change the level or work with the code, add in example folder the missing libary files and folders:
+To change the level or work with the code, add in the example folder the missing libary files and folders:
 ```
 lib/weltmeister/
 lib/impact/
@@ -47,16 +109,38 @@ weltmeister.html
 * A* search algorithm (getPath)
 	* Make it faster
 	* Add coordinated movement (For the future ...)
+	* More?
 * path following (followPath)
 	* Very much room for improvments ...
+	* Make it more natural ...
+
+
+## Credits
+### Thanks to
+* Joncom (Deactivate diagonal movement)
+* FabienM (Heading Direction)
+* docmarionum1 (Teleportation bug)
+* tmfkmoney (Support for obsticles which are bigger than the tilesize)
+* chadrickm (Max movement)
+
+### Based on
+* [https://gist.github.com/994534](https://gist.github.com/994534)
+* [http://www.policyalmanac.org/games/aStarTutorial_de.html](http://www.policyalmanac.org/games/aStarTutorial_de.html)
+* [http://theory.stanford.edu/~amitp/GameProgramming/index.html](http://theory.stanford.edu/~amitp/GameProgramming/index.html)
 
 
 ## Changelog
+#### v1.2.0
+* A* search algorithm
+	* Max movement (Thanks to chadrickm)
+* Generak
+	* Readme improved
+
 #### v1.1.0
 * A* search algorithm
-	* Support for entities which are bigger than the tilesize, should be a multiple ... (Thanks to tmfkmoney)
+	* Support for entities which are bigger than the tilesize, should be a multiple of the tilesize ... (Thanks to tmfkmoney)
 * path following
-	* Fix for teleportion bug (Thanks to docmarionum1)
+	* Fix for teleportation bug (Thanks to docmarionum1)
 
 ### v1.0.0
 * A* search algorithm
@@ -73,7 +157,7 @@ weltmeister.html
 * A* search algorithm
 	* If diagonal movement is deactivated, it uses the manhattan distance heuristic
 * path following
-	* Heading direction is now saved in the headingDirection variable, for more information check the example
+	* Heading direction is now saved in the headingDirection variable, for more information check the example (Thanks to FabienM)
 
 ##### v0.9.2
 * A* search algorithm
@@ -84,7 +168,7 @@ weltmeister.html
 
 ##### v0.9.1
 * A* search algorithm
-	* No it is possible to deactivate diagonal movement (Example: getPath(destinationX, destinationY, false), default is true!) 
+	* Now it is possible to deactivate diagonal movement (Example: getPath(destinationX, destinationY, false), default is true!) (Thanks to Joncom)
 	* The check for not cutting edges was improved
 	* Small G and H calculation changes
 

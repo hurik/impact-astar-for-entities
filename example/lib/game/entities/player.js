@@ -38,6 +38,30 @@ EntityPlayer = ig.Entity.extend({
 			this.getPath(ig.input.mouse.x + ig.game.screen.x, ig.input.mouse.y + ig.game.screen.y, true, ['EntityObstacle', 'EntityObstacle2', 'EntityObstacle3'], [exampleObstacle]);
 		}
 
+		if(ig.input.pressed('keyR')) {
+			if(this.maxMovementActive) {
+				this.maxMovementActive = false;
+
+				this.directionChangeMalus45degree = 2;
+				this.directionChangeMalus90degree = 5;
+			} else {
+				this.maxMovementActive = true;
+
+				this.directionChangeMalus45degree = 0;
+				this.directionChangeMalus90degree = 0;
+			}
+		}
+
+		if(ig.input.state('keyF')) {
+			if(this.maxMovement > 0) {
+				this.maxMovement--;
+			}
+		}
+
+		if(ig.input.state('keyG')) {
+			this.maxMovement++;
+		}
+
 		// Walk the path
 		this.followPath(this.speed, true);
 
@@ -56,6 +80,13 @@ EntityPlayer = ig.Entity.extend({
 		if(!ig.global.wm) {
 			// Draw the path ...
 			this.drawPath(0, 255, 33, 0.5);
+
+			if(this.maxMovementActive) {
+				ig.game.font.draw('maxMovementActive (r/t): true', 200, 1, ig.Font.ALIGN.LEFT);
+			} else {
+				ig.game.font.draw('maxMovementActive (r/t): false', 200, 1, ig.Font.ALIGN.LEFT);
+			}
+			ig.game.font.draw('maxMovement      (f/g): ' + this.maxMovement, 200, 8, ig.Font.ALIGN.LEFT);
 		}
 
 		this.parent();
