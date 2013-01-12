@@ -21,7 +21,7 @@ Check the `example/lib/game/game.js`, `example/lib/game/entities/player.js`, `ex
 
 Calculates the path and the the result will be saved in `this.path`.
 
-Since version 1.2.0 you also can activate the max movement with `this.maxMovementActive`. The lenght of the path can be modified with `this.maxMovement`. But you should deactivatee the `this.directionChangeMalus45degree` and `this.directionChangeMalus90degree` malus (Set it to zero ...) to prevent strange paths. Check the `example/lib/game/entities/player.js` for more information ...
+Since version 1.2.0 you also can activate the max movement with `this.maxMovementActive`. The lenght of the path can be modified with `this.maxMovement`. But you should deactivate the `this.directionChangeMalus45degree` and `this.directionChangeMalus90degree` maluses (Set them to zero ...) to prevent strange paths. Check the `example/lib/game/entities/player.js` for more information ...
 
 * **destinationX and destinationY:** The destination ...
 * **diagonalMovement:** If true diagonal movement is activated (Default) and when false it isn't.
@@ -100,9 +100,9 @@ weltmeister.html
 
 
 ## Changelog
-##### v1.2.1
+##### v1.2.2
 * A* search algorithm
-	* Little bugfix with the maluses
+	* Little bugfix for the maluses
 
 ##### v1.2.1
 * A* search algorithm
