@@ -42,8 +42,8 @@ EntityPlayer = ig.Entity.extend({
 			if(this.maxMovementActive) {
 				this.maxMovementActive = false;
 
-				this.directionChangeMalus45degree = 2;
-				this.directionChangeMalus90degree = 5;
+				this.directionChangeMalus45degree = ig.game.collisionMap.tilesize / 4;
+				this.directionChangeMalus90degree = ig.game.collisionMap.tilesize * 5 / 8;
 			} else {
 				this.maxMovementActive = true;
 

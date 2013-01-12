@@ -39,12 +39,25 @@ ig.Entity.inject({
 	// 1 4 6
 	// 2 0 7
 	// 3 5 8
+	
 	maxMovementActive: false,
 	maxMovement: 200,
 
 	// Direction change maluses
-	directionChangeMalus45degree: 2,
-	directionChangeMalus90degree: 5,
+	directionChangeMalus45degree: 0,
+	directionChangeMalus90degree: 0,
+
+	// Fix by docmarionum1 for the teleportation bug
+	init: function(x, y, settings) {
+		this.parent(x, y, settings);
+		this.last = {
+			x: x,
+			y: y
+		};
+
+		this.directionChangeMalus45degree = ig.game.collisionMap.tilesize / 4;
+		this.directionChangeMalus90degree = ig.game.collisionMap.tilesize * 5 / 8;
+	},
 
 	getPath: function(destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray) {
 		if(diagonalMovement == null) {
@@ -476,8 +489,8 @@ ig.Entity.inject({
 			y: startPos.y + delta.y
 		};
 	},
-
 	// ----- Max movement by Chadrick ----- END -----
+
 	followPath: function(speed, alignOnNearestTile) {
 		if(alignOnNearestTile == null) {
 			alignOnNearestTile = false;
@@ -615,15 +628,6 @@ ig.Entity.inject({
 			ig.system.context.stroke();
 			ig.system.context.closePath();
 		}
-	},
-
-	// Fix by docmarionum1 for the teleportation bug
-	init: function(x, y, settings) {
-		this.parent(x, y, settings);
-		this.last = {
-			x: x,
-			y: y
-		};
 	}
 });
 

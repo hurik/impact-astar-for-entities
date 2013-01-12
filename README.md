@@ -11,6 +11,8 @@ Since version 1.0.0 it also can take also entity types into his calculation. But
 
 More information in the [Impact Game Engine Forum](http://impactjs.com/forums/): http://impactjs.com/forums/code/a-path-finder
 
+It would be very nice when you inform me, with an short email, when you are using this plugin in a project.
+
 
 ## Usage
 Check the `example/lib/game/game.js`, `example/lib/game/entities/player.js`, `example/lib/game/entities/enemy.js` and `example/lib/game/entities/enemy2.js`!
@@ -21,10 +23,10 @@ Calculates the path and the the result will be saved in `this.path`.
 
 Since version 1.2.0 you also can activate the max movement with `this.maxMovementActive`. The lenght of the path can be modified with `this.maxMovement`. But you should deactivatee the `this.directionChangeMalus45degree` and `this.directionChangeMalus90degree` malus (Set it to zero ...) to prevent strange paths. Check the `example/lib/game/entities/player.js` for more information ...
 
-* destinationX and destinationY: The destination ...
-* diagonalMovement: If true diagonal movement is activated (Default) and when false it isn't.
-* entityTypesArray: It is an array! It wants the entity type as string! Example: ['EntityPlayer', 'EntityEnemy', ...]
-* ignoreEntityArray: Also an array! It wants references of the entities you want to exclude from the including into the collision map! Example: [this, enemey[0], ...]
+* **destinationX and destinationY:** The destination ...
+* **diagonalMovement:** If true diagonal movement is activated (Default) and when false it isn't.
+* **entityTypesArray:** It is an array! It wants the entity type as string! Example: ['EntityPlayer', 'EntityEnemy', ...]
+* **ignoreEntityArray:** Also an array! It wants references of the entities you want to exclude from the including into the collision map! Example: [this, enemey[0], ...]
 
 **followPath(speed, alignOnNearestTile)**
 
@@ -37,25 +39,25 @@ Heading direction values:
 3 5 8
 ```
 
-* speed: The velocity which will be used to follow the path.
-* alignOnNearestTile: If activated (true) and the entity stops between tiles, it will automatically align on the nearest tile.
+* **speed:** The velocity which will be used to follow the path.
+* **alignOnNearestTile:** If activated (true) and the entity stops between tiles, it will automatically align on the nearest tile.
 
 **drawPath(r, g, b, a, lineWidth)**
 
 Draw the calculated path.
 
-* r, g and b: The color of the path.
-* a: Alpha value of the color.
-* lineWidth: The width of the line ...
+* **r, g and b:** The color of the path.
+* **a:** Alpha value of the color.
+* **lineWidth:** The width of the line ...
 
 
 ## Live demo
 Check out: [http://www.hurik.de/impact-astar-for-entities/](http://www.hurik.de/impact-astar-for-entities/)
 
 ### Info
-* The green player is controled by clicking on the maps. It can't go through the obstacles, except the one in the middle. Check the player.js how it works ...
-* The red enemy follows the player. Every 2 seconds it calculates the path to the player. It cannot pass every obstacle. Check the enemy.js how it works ...
-* The blue enemy follows the player. Every 4 seconds his path is updated. It can pass the obstacles and it cannot move diagonal. Check the enemy2.js how it works ...
+* The **green player** is controled by clicking on the maps. It can't go through the obstacles, except the one in the middle. Check the player.js how it works ...
+* The **red enemy** follows the player. Every 2 seconds it calculates the path to the player. It cannot pass every obstacle. Check the enemy.js how it works ...
+* The **blue enemy** follows the player. Every 4 seconds his path is updated. It can pass the obstacles and it cannot move diagonal. Check the enemy2.js how it works ...
 
 
 ## Example
@@ -98,10 +100,16 @@ weltmeister.html
 
 
 ## Changelog
+##### v1.2.1
+* A* search algorithm
+	* Minor improvments
+* General
+	* Readme improved
+
 #### v1.2.0
 * A* search algorithm
 	* Max movement (Thanks to chadrickm)
-* Generak
+* General
 	* Readme improved
 
 #### v1.1.0

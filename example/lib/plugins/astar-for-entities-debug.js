@@ -2,7 +2,7 @@
  * astar-for-entities-debug
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.2.0
+ * v1.2.1
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -10,7 +10,7 @@
  *
  * This work is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/.
  *
- * It would be very nice when you inform me with an short email when you are using this plugin in a project.
+ * It would be very nice when you inform me, with an short email, when you are using this plugin in a project.
  *
  * Thanks to: - Joncom (Deactivate diagonal movement)
  *            - FabienM (Heading Direction)
