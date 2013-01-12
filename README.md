@@ -102,6 +102,10 @@ weltmeister.html
 ## Changelog
 ##### v1.2.1
 * A* search algorithm
+	* Little bugfix with the maluses
+
+##### v1.2.1
+* A* search algorithm
 	* Minor improvments
 * General
 	* Readme improved

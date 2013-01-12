@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.2.1
+ * v1.2.2
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -47,14 +47,7 @@ ig.Entity.inject({
 	directionChangeMalus45degree: 0,
 	directionChangeMalus90degree: 0,
 
-	// Fix by docmarionum1 for the teleportation bug
-	init: function(x, y, settings) {
-		this.parent(x, y, settings);
-		this.last = {
-			x: x,
-			y: y
-		};
-
+	ready: function() {
 		this.directionChangeMalus45degree = ig.game.collisionMap.tilesize / 4;
 		this.directionChangeMalus90degree = ig.game.collisionMap.tilesize * 5 / 8;
 	},
@@ -168,7 +161,6 @@ ig.Entity.inject({
 					if(currentNode.p == -1) {
 						// Erase the entities from the collision map						
 						this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
-
 
 						// added for limiting the movement path only be as long as the maxMovement... Chadrick
 						if(this.maxMovement > 0 && this._getPathLength() > this.maxMovement && this.maxMovementActive) {
@@ -628,6 +620,16 @@ ig.Entity.inject({
 			ig.system.context.stroke();
 			ig.system.context.closePath();
 		}
+	},
+
+	// Fix by docmarionum1 for the teleportation bug
+	init: function(x, y, settings) {
+		this.parent(x, y, settings);
+
+		this.last = {
+			x: x,
+			y: y
+		};
 	}
 });
 

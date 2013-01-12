@@ -2,7 +2,7 @@
  * astar-for-entities-debug
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.2.1
+ * v1.2.2
  *
  * Andreas Giemza
  * andreas@giemza.net

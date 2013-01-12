@@ -82,11 +82,11 @@ EntityPlayer = ig.Entity.extend({
 			this.drawPath(0, 255, 33, 0.5);
 
 			if(this.maxMovementActive) {
-				ig.game.font.draw('maxMovementActive (r/t): true', 200, 1, ig.Font.ALIGN.LEFT);
+				ig.game.font.draw('maxMovementActive   (r): true', 161, 1, ig.Font.ALIGN.LEFT);
 			} else {
-				ig.game.font.draw('maxMovementActive (r/t): false', 200, 1, ig.Font.ALIGN.LEFT);
+				ig.game.font.draw('maxMovementActive   (r): false', 161, 1, ig.Font.ALIGN.LEFT);
 			}
-			ig.game.font.draw('maxMovement      (f/g): ' + this.maxMovement, 200, 8, ig.Font.ALIGN.LEFT);
+			ig.game.font.draw('maxMovement      (f/g): ' + this.maxMovement, 161, 8, ig.Font.ALIGN.LEFT);
 		}
 
 		this.parent();
