@@ -100,9 +100,15 @@ weltmeister.html
 
 
 ## Changelog
+##### v1.2.3
+* A* search algorithm
+	* Little bugfix with bigger entities
+* General
+	* Better example image
+
 ##### v1.2.2
 * A* search algorithm
-	* Little bugfix for the maluses
+	* Little bugfix for the direction chnage maluses
 
 ##### v1.2.1
 * A* search algorithm

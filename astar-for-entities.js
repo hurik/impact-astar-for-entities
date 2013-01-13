@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.2.2
+ * v1.2.3
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -386,10 +386,15 @@ ig.Entity.inject({
 
 					for(k = 0; k < sizeX; k++) {
 						for(l = 0; l < sizeY; l++) {
-							if(addErase && ig.game.collisionMap.data[(entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l][(entities[j].pos.x / ig.game.collisionMap.tilesize).floor() + k] == 0) {
-								ig.game.collisionMap.data[(entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l][(entities[j].pos.x / ig.game.collisionMap.tilesize).floor() + k] = 9999;
-							} else if(!addErase && ig.game.collisionMap.data[(entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l][(entities[j].pos.x / ig.game.collisionMap.tilesize).floor() + k] == 9999) {
-								ig.game.collisionMap.data[(entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l][(entities[j].pos.x / ig.game.collisionMap.tilesize).floor() + k] = 0;
+							var changeTileX = (entities[j].pos.x / ig.game.collisionMap.tilesize).floor() + k,
+								changeTileY = (entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l;
+
+							if(changeTileX >= 0 && changeTileX < ig.game.collisionMap.width && changeTileY >= 0 && changeTileY < ig.game.collisionMap.height) {
+								if(addErase && ig.game.collisionMap.data[changeTileY][changeTileX] == 0) {
+									ig.game.collisionMap.data[changeTileY][changeTileX] = 9999;
+								} else if(!addErase && ig.game.collisionMap.data[changeTileY][changeTileX] == 9999) {
+									ig.game.collisionMap.data[changeTileY][changeTileX] = 0;
+								}
 							}
 						}
 					}
