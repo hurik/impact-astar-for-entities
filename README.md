@@ -3,7 +3,7 @@
 ## Information
 This plugin for the [Impact Game Engine](http://impactjs.com/) adds pathfinding to the entities. It also has a basic path following function, a example for path drawing function and a debug panel for showing the path of all entities.
 
-Since version 1.0.0 it also can take also entity types into his calculation. But it is only realy working for fixed obsticles.
+Since version 1.0.0 it also can take entity types into his calculation. But it is only realy working for fixed obsticles.
 
 **Attention:**
 * The entities must be aligned with a tile and
