@@ -489,9 +489,7 @@ ig.Entity.inject({
 	// ----- Max movement by Chadrick ----- END -----
 
 	followPath: function(speed, alignOnNearestTile) {
-		if(alignOnNearestTile == null) {
-			alignOnNearestTile = false;
-		}
+		if(typeof alignOnNearestTile === 'undefined') alignOnNearestTile = false;
 
 		// If the path was erased before the entity has gotten to his destination and stands between two tiles, this little check will adlign on nearest tile
 		if(!this.path && alignOnNearestTile) {
