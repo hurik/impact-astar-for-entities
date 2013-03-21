@@ -499,7 +499,7 @@ ig.Entity.inject({
 
 			// Check if our entity is align on it
 			if(cx != this.pos.x || cy != this.pos.y) {
-				// Get the x dinstance to the current tile
+				// Get the x distance to the current tile
 				var dx = this.pos.x - cx,
 					dy = this.pos.y - cy;
 
