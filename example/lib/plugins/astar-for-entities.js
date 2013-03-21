@@ -514,11 +514,9 @@ ig.Entity.inject({
 				if(dx < dxp) tx = cx;
 				else         tx = cx + ig.game.collisionMap.tilesize;
 
-				if(dy < dyp) {
-					var ty = cy;
-				} else {
-					var ty = cy + ig.game.collisionMap.tilesize;
-				}
+				var ty;
+				if(dy < dyp) ty = cy;
+				else         ty = cy + ig.game.collisionMap.tilesize;
 
 				// Add it to the path
 				this.path = [{
