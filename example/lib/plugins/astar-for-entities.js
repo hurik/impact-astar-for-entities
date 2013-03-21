@@ -535,16 +535,13 @@ ig.Entity.inject({
 					this.pos.x = this.path[0].x;
 					this.vel.y = 0;
 					this.pos.y = this.path[0].y;
+
+					this.path = null;
+					return;
 				}
 
 				// Erase the last waypoint
 				this.path.splice(0, 1);
-
-				// if it was the last nothing to do ...
-				if(!this.path.length) {
-					this.path = null;
-					return;
-				}
 			}
 
 			// Calculate the speed if we move diagonal
