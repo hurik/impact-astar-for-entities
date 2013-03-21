@@ -510,11 +510,9 @@ ig.Entity.inject({
 					dyp = cy + ig.game.collisionMap.tilesize - this.pos.y;
 
 				// Choose the smaller distance
-				if(dx < dxp) {
-					var tx = cx;
-				} else {
-					var tx = cx + ig.game.collisionMap.tilesize;
-				}
+				var tx;
+				if(dx < dxp) tx = cx;
+				else         tx = cx + ig.game.collisionMap.tilesize;
 
 				if(dy < dyp) {
 					var ty = cy;
