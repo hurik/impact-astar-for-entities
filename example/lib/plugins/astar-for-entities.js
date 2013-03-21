@@ -424,7 +424,7 @@ ig.Entity.inject({
 	},
 
 	_createNewLimitedPath: function() {
-		var newPath = new Array();
+		var newPath = [];
 		var distance = 0;
 
 		// make sure we have a path
