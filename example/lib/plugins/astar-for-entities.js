@@ -536,6 +536,7 @@ ig.Entity.inject({
 					this.vel.y = 0;
 					this.pos.y = this.path[0].y;
 
+					// Nothing left to do.
 					this.path = null;
 					return;
 				}
