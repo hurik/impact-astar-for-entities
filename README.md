@@ -195,7 +195,7 @@ weltmeister.html
 
 #### v0.6.0
 * A* search algorithm
-	* Checks now for walkable tiles and not for walls, no more problems with slopes anymore 
+	* Checks now for walkable tiles and not for walls, no more problems with slopes anymore
 * path following
 	* Added entity movement stop when there is no path
 	* No rounding anymore for diagonal movments speed calculation (Doesn't impact the framerate)
