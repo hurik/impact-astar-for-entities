@@ -15,7 +15,7 @@ It would be very nice when you inform me, with an short email, when you are usin
 
 
 ## Usage
-Check the `example/lib/game/game.js`, `example/lib/game/entities/player.js`, `example/lib/game/entities/enemy.js` and `example/lib/game/entities/enemy2.js`!
+Check the `example/lib/game/main.js`, `example/lib/game/entities/player.js`, `example/lib/game/entities/enemy.js` and `example/lib/game/entities/enemy2.js`!
 
 **getPath(destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray)**
 
