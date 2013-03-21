@@ -72,7 +72,7 @@ weltmeister.html
 
 
 ## Example images
-![Oldest Example](/hurik/impact-astar-for-entities/raw/master/example.png)
+![Oldest Example](https://raw.github.com/hurik/impact-astar-for-entities/master/example.png)
 
 
 ## TODO
