@@ -550,7 +550,7 @@ ig.Entity.inject({
 				speed = Math.sqrt(Math.pow(speed, 2) / 2);
 			}
 
-			// Move it in the right direction ...
+			// Move entity toward waypoint.
 			if((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x)) {
 				this.vel.x = 0;
 				this.pos.x = this.path[0].x;
