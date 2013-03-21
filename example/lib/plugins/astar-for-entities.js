@@ -572,23 +572,15 @@ ig.Entity.inject({
 			}
 
 			// Get the heading direction
-			if(this.vel.x < 0 && this.vel.y < 0) {
-				this.headingDirection = 1;
-			} else if(this.vel.x < 0 && this.vel.y > 0) {
-				this.headingDirection = 3;
-			} else if(this.vel.x > 0 && this.vel.y < 0) {
-				this.headingDirection = 6;
-			} else if(this.vel.x > 0 && this.vel.y > 0) {
-				this.headingDirection = 8;
-			} else if(this.vel.x < 0) {
-				this.headingDirection = 2;
-			} else if(this.vel.x > 0) {
-				this.headingDirection = 7;
-			} else if(this.vel.y < 0) {
-				this.headingDirection = 4;
-			} else if(this.vel.y > 0) {
-				this.headingDirection = 5;
-			}
+			if      (this.vel.x < 0 && this.vel.y < 0) this.headingDirection = 1;
+			else if (this.vel.x < 0 && this.vel.y > 0) this.headingDirection = 3;
+			else if (this.vel.x > 0 && this.vel.y < 0) this.headingDirection = 6;
+			else if (this.vel.x > 0 && this.vel.y > 0) this.headingDirection = 8;
+			else if (this.vel.x < 0)                   this.headingDirection = 2;
+			else if (this.vel.x > 0)                   this.headingDirection = 7;
+			else if (this.vel.y < 0)                   this.headingDirection = 4;
+			else if (this.vel.y > 0)                   this.headingDirection = 5;
+
 		} else {
 			// When there is no path, don't move ...
 			this.vel.x = 0;
