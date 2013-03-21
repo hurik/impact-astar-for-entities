@@ -3,7 +3,7 @@
 ## Information
 This plugin for the [Impact Game Engine](http://impactjs.com/) adds pathfinding to the entities. It also has a basic path following function, a example for path drawing function and a debug panel for showing the path of all entities.
 
-Since version 1.0.0 it also can take also entity types into his calculation. But it is only realy working for fixed obsticles.
+Since version 1.0.0 it also can take entity types into his calculation. But it is only realy working for fixed obsticles.
 
 **Attention:**
 * The entities must be aligned with a tile and
@@ -15,7 +15,7 @@ It would be very nice when you inform me, with an short email, when you are usin
 
 
 ## Usage
-Check the `example/lib/game/game.js`, `example/lib/game/entities/player.js`, `example/lib/game/entities/enemy.js` and `example/lib/game/entities/enemy2.js`!
+Check the `example/lib/game/main.js`, `example/lib/game/entities/player.js`, `example/lib/game/entities/enemy.js` and `example/lib/game/entities/enemy2.js`!
 
 **getPath(destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray)**
 
@@ -72,7 +72,7 @@ weltmeister.html
 
 
 ## Example images
-![Oldest Example](/hurik/impact-astar-for-entities/raw/master/example.png)
+![Oldest Example](https://raw.github.com/hurik/impact-astar-for-entities/master/example.png)
 
 
 ## TODO
@@ -195,7 +195,7 @@ weltmeister.html
 
 #### v0.6.0
 * A* search algorithm
-	* Checks now for walkable tiles and not for walls, no more problems with slopes anymore 
+	* Checks now for walkable tiles and not for walls, no more problems with slopes anymore
 * path following
 	* Added entity movement stop when there is no path
 	* No rounding anymore for diagonal movments speed calculation (Doesn't impact the framerate)
