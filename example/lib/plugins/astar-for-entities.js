@@ -536,7 +536,7 @@ ig.Entity.inject({
 			if(((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x == this.path[0].x) && ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || this.pos.y == this.path[0].y)) {
 				// Was it the last waypoint?
 				if(this.path.length == 1) {
-					// Stopp the movement and set the position
+					// Stop the movement and set the position
 					this.vel.x = 0;
 					this.pos.x = this.path[0].x;
 					this.vel.y = 0;
