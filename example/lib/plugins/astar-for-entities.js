@@ -39,7 +39,7 @@ ig.Entity.inject({
 	// 1 4 6
 	// 2 0 7
 	// 3 5 8
-	
+
 	maxMovementActive: false,
 	maxMovement: 200,
 
@@ -84,7 +84,7 @@ ig.Entity.inject({
 		if(destinationNode.x == startNode.x && destinationNode.y == startNode.y) {
 			this.path = null;
 
-			// Erase the entities from the collision map						
+			// Erase the entities from the collision map
 			this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 			return;
@@ -94,7 +94,7 @@ ig.Entity.inject({
 		if(map[destinationNode.y][destinationNode.x] != 0) {
 			this.path = null;
 
-			// Erase the entities from the collision map						
+			// Erase the entities from the collision map
 			this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 			return;
@@ -153,13 +153,13 @@ ig.Entity.inject({
 					lastDirection = 2;
 				}
 
-				// Go up the chain to recreate the path 
+				// Go up the chain to recreate the path
 				while(true) {
 					currentNode = closed[currentNode.p];
 
 					// Stop when you get to the start node ...
 					if(currentNode.p == -1) {
-						// Erase the entities from the collision map						
+						// Erase the entities from the collision map
 						this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 						// added for limiting the movement path only be as long as the maxMovement... Chadrick
@@ -354,7 +354,7 @@ ig.Entity.inject({
 		// No path found ...
 		this.path = null;
 
-		// Erase the entities from the collision map	
+		// Erase the entities from the collision map
 		this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 		return;
