@@ -77,7 +77,7 @@ ig.Entity.inject({
 		this._addEraseEntities(true, entityTypesArray, ignoreEntityArray);
 
 		// Create the start and the destination as nodes
-		var startNode = new asfeNode((this.pos.x / mapTilesize).floor(), (this.pos.y / mapTilesize).floor(), -1, 0),
+		var startNode = new asfeNode((this.pos.x / mapTilesize).ceil(), (this.pos.y / mapTilesize).ceil(), -1, 0),
 			destinationNode = new asfeNode((destinationX / mapTilesize).floor(), (destinationY / mapTilesize).floor(), -1, 0);
 
 		// Check if the destination tile is not the start tile ...
