@@ -39,7 +39,7 @@ ig.Entity.inject({
 	// 1 4 6
 	// 2 0 7
 	// 3 5 8
-	
+
 	maxMovementActive: false,
 	maxMovement: 200,
 
@@ -77,14 +77,14 @@ ig.Entity.inject({
 		this._addEraseEntities(true, entityTypesArray, ignoreEntityArray);
 
 		// Create the start and the destination as nodes
-		var startNode = new asfeNode((this.pos.x / mapTilesize).floor(), (this.pos.y / mapTilesize).floor(), -1, 0),
+		var startNode = new asfeNode((this.pos.x / mapTilesize).ceil(), (this.pos.y / mapTilesize).ceil(), -1, 0),
 			destinationNode = new asfeNode((destinationX / mapTilesize).floor(), (destinationY / mapTilesize).floor(), -1, 0);
 
 		// Check if the destination tile is not the start tile ...
 		if(destinationNode.x == startNode.x && destinationNode.y == startNode.y) {
 			this.path = null;
 
-			// Erase the entities from the collision map						
+			// Erase the entities from the collision map
 			this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 			return;
@@ -94,7 +94,7 @@ ig.Entity.inject({
 		if(map[destinationNode.y][destinationNode.x] != 0) {
 			this.path = null;
 
-			// Erase the entities from the collision map						
+			// Erase the entities from the collision map
 			this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 			return;
@@ -153,13 +153,13 @@ ig.Entity.inject({
 					lastDirection = 2;
 				}
 
-				// Go up the chain to recreate the path 
+				// Go up the chain to recreate the path
 				while(true) {
 					currentNode = closed[currentNode.p];
 
 					// Stop when you get to the start node ...
 					if(currentNode.p == -1) {
-						// Erase the entities from the collision map						
+						// Erase the entities from the collision map
 						this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 						// added for limiting the movement path only be as long as the maxMovement... Chadrick
@@ -354,7 +354,7 @@ ig.Entity.inject({
 		// No path found ...
 		this.path = null;
 
-		// Erase the entities from the collision map	
+		// Erase the entities from the collision map
 		this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
 		return;
@@ -424,7 +424,7 @@ ig.Entity.inject({
 	},
 
 	_createNewLimitedPath: function() {
-		var newPath = new Array();
+		var newPath = [];
 		var distance = 0;
 
 		// make sure we have a path
@@ -489,9 +489,7 @@ ig.Entity.inject({
 	// ----- Max movement by Chadrick ----- END -----
 
 	followPath: function(speed, alignOnNearestTile) {
-		if(alignOnNearestTile == null) {
-			alignOnNearestTile = false;
-		}
+		if(typeof alignOnNearestTile === 'undefined') alignOnNearestTile = false;
 
 		// If the path was erased before the entity has gotten to his destination and stands between two tiles, this little check will adlign on nearest tile
 		if(!this.path && alignOnNearestTile) {
@@ -501,7 +499,7 @@ ig.Entity.inject({
 
 			// Check if our entity is align on it
 			if(cx != this.pos.x || cy != this.pos.y) {
-				// Get the x dinstance to the current tile
+				// Get the x distance to the current tile
 				var dx = this.pos.x - cx,
 					dy = this.pos.y - cy;
 
@@ -510,17 +508,13 @@ ig.Entity.inject({
 					dyp = cy + ig.game.collisionMap.tilesize - this.pos.y;
 
 				// Choose the smaller distance
-				if(dx < dxp) {
-					var tx = cx;
-				} else {
-					var tx = cx + ig.game.collisionMap.tilesize;
-				}
+				var tx;
+				if(dx < dxp) tx = cx;
+				else         tx = cx + ig.game.collisionMap.tilesize;
 
-				if(dy < dyp) {
-					var ty = cy;
-				} else {
-					var ty = cy + ig.game.collisionMap.tilesize;
-				}
+				var ty;
+				if(dy < dyp) ty = cy;
+				else         ty = cy + ig.game.collisionMap.tilesize;
 
 				// Add it to the path
 				this.path = [{
@@ -536,21 +530,19 @@ ig.Entity.inject({
 			if(((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x == this.path[0].x) && ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || this.pos.y == this.path[0].y)) {
 				// Was it the last waypoint?
 				if(this.path.length == 1) {
-					// Stopp the movement and set the position
+					// Stop the movement and set the position
 					this.vel.x = 0;
 					this.pos.x = this.path[0].x;
 					this.vel.y = 0;
 					this.pos.y = this.path[0].y;
+
+					// Nothing left to do.
+					this.path = null;
+					return;
 				}
 
 				// Erase the last waypoint
 				this.path.splice(0, 1);
-
-				// if it was the last nothing to do ...
-				if(!this.path.length) {
-					this.path = null;
-					return;
-				}
 			}
 
 			// Calculate the speed if we move diagonal
@@ -558,7 +550,7 @@ ig.Entity.inject({
 				speed = Math.sqrt(Math.pow(speed, 2) / 2);
 			}
 
-			// Move it in the right direction ...
+			// Move entity toward waypoint.
 			if((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x)) {
 				this.vel.x = 0;
 				this.pos.x = this.path[0].x;
@@ -578,23 +570,15 @@ ig.Entity.inject({
 			}
 
 			// Get the heading direction
-			if(this.vel.x < 0 && this.vel.y < 0) {
-				this.headingDirection = 1;
-			} else if(this.vel.x < 0 && this.vel.y > 0) {
-				this.headingDirection = 3;
-			} else if(this.vel.x > 0 && this.vel.y < 0) {
-				this.headingDirection = 6;
-			} else if(this.vel.x > 0 && this.vel.y > 0) {
-				this.headingDirection = 8;
-			} else if(this.vel.x < 0) {
-				this.headingDirection = 2;
-			} else if(this.vel.x > 0) {
-				this.headingDirection = 7;
-			} else if(this.vel.y < 0) {
-				this.headingDirection = 4;
-			} else if(this.vel.y > 0) {
-				this.headingDirection = 5;
-			}
+			if      (this.vel.x < 0 && this.vel.y < 0) this.headingDirection = 1;
+			else if (this.vel.x < 0 && this.vel.y > 0) this.headingDirection = 3;
+			else if (this.vel.x > 0 && this.vel.y < 0) this.headingDirection = 6;
+			else if (this.vel.x > 0 && this.vel.y > 0) this.headingDirection = 8;
+			else if (this.vel.x < 0)                   this.headingDirection = 2;
+			else if (this.vel.x > 0)                   this.headingDirection = 7;
+			else if (this.vel.y < 0)                   this.headingDirection = 4;
+			else if (this.vel.y > 0)                   this.headingDirection = 5;
+
 		} else {
 			// When there is no path, don't move ...
 			this.vel.x = 0;
