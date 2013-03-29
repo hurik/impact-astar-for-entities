@@ -75,7 +75,7 @@ ig.Entity.inject({
 			destinationNode = new asfeNode((destinationX / mapTilesize).floor(), (destinationY / mapTilesize).floor(), -1, 0);
 
 		// Check if the destination tile is not the start tile ...
-		if(destinationNode.x == startNode.x && destinationNode.y == startNode.y) {
+		if(destinationNode.x === startNode.x && destinationNode.y === startNode.y) {
 			this.path = null;
 
 			// Erase the entities from the collision map
@@ -127,7 +127,7 @@ ig.Entity.inject({
 			currentNode = open[bestNode];
 
 			// Check if we've reached our destination
-			if(currentNode.x == destinationNode.x && currentNode.y == destinationNode.y) {
+			if(currentNode.x === destinationNode.x && currentNode.y === destinationNode.y) {
 				// Add the destination to the path
 				this.path = [{
 					x: destinationNode.x * mapTilesize,
@@ -148,7 +148,7 @@ ig.Entity.inject({
 					currentNode = closed[currentNode.p];
 
 					// Stop when you get to the start node ...
-					if(currentNode.p == -1) {
+					if(currentNode.p === -1) {
 						// Erase the entities from the collision map
 						this._addEraseEntities(false, entityTypesArray, ignoreEntityArray);
 
@@ -166,7 +166,7 @@ ig.Entity.inject({
 					else if(currentNode.x === closed[currentNode.p].x && currentNode.y !== closed[currentNode.p].y) direction = 2;
 
 					// Only save the path node, if the path changes the direction
-					if(direction != lastDirection) {
+					if(direction !== lastDirection) {
 						// Add the steps to the path
 						this.path.unshift({
 							x: currentNode.x * mapTilesize,
@@ -198,7 +198,7 @@ ig.Entity.inject({
 				for(var dy = -1; dy <= 1; dy++) {
 					if(!diagonalMovement) {
 						// Skips checking of diagonals, when diagonalMovement is false
-						if(Math.abs(dx) == Math.abs(dy)) {
+						if(Math.abs(dx) === Math.abs(dy)) {
 							continue;
 						}
 					}
@@ -242,16 +242,16 @@ ig.Entity.inject({
 						tempG = currentNode.g + Math.sqrt(Math.pow(newX - currentNode.x, 2) + Math.pow(newY - currentNode.y, 2));
 
 						// When the direction changed
-						if(currentNode.d != direction) {
-							if     (currentNode.d == 1 && (direction == 2 || direction == 4)) tempG += this.directionChangeMalus45degree;
-							else if(currentNode.d == 2 && (direction == 1 || direction == 3)) tempG += this.directionChangeMalus45degree;
-							else if(currentNode.d == 3 && (direction == 2 || direction == 5)) tempG += this.directionChangeMalus45degree;
-							else if(currentNode.d == 4 && (direction == 1 || direction == 6)) tempG += this.directionChangeMalus45degree;
-							else if(currentNode.d == 5 && (direction == 3 || direction == 8)) tempG += this.directionChangeMalus45degree;
-							else if(currentNode.d == 6 && (direction == 4 || direction == 7)) tempG += this.directionChangeMalus45degree;
-							else if(currentNode.d == 7 && (direction == 6 || direction == 8)) tempG += this.directionChangeMalus45degree;
-							else if(currentNode.d == 8 && (direction == 5 || direction == 7)) tempG += this.directionChangeMalus45degree;
-							else                                                              tempG += this.directionChangeMalus90degree;
+						if(currentNode.d !== direction) {
+							if     (currentNode.d === 1 && (direction === 2 || direction === 4)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d === 2 && (direction === 1 || direction === 3)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d === 3 && (direction === 2 || direction === 5)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d === 4 && (direction === 1 || direction === 6)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d === 5 && (direction === 3 || direction === 8)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d === 6 && (direction === 4 || direction === 7)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d === 7 && (direction === 6 || direction === 8)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d === 8 && (direction === 5 || direction === 7)) tempG += this.directionChangeMalus45degree;
+							else                                                                 tempG += this.directionChangeMalus90degree;
 						}
 
 						// If it is smaller than the g value in the existing node, update the node
@@ -328,7 +328,7 @@ ig.Entity.inject({
 
 				// Check if it is excludes from the the check
 				for(k = 0; k < ignoreEntityArray.length; k++) {
-					if(ignoreEntityArray[k].id == entities[j].id) {
+					if(ignoreEntityArray[k].id === entities[j].id) {
 						ignoreThisEntity = true;
 					}
 				}
@@ -346,7 +346,7 @@ ig.Entity.inject({
 							if(changeTileX >= 0 && changeTileX < ig.game.collisionMap.width && changeTileY >= 0 && changeTileY < ig.game.collisionMap.height) {
 								if(addErase && ig.game.collisionMap.data[changeTileY][changeTileX] === 0) {
 									ig.game.collisionMap.data[changeTileY][changeTileX] = 9999;
-								} else if(!addErase && ig.game.collisionMap.data[changeTileY][changeTileX] == 9999) {
+								} else if(!addErase && ig.game.collisionMap.data[changeTileY][changeTileX] === 9999) {
 									ig.game.collisionMap.data[changeTileY][changeTileX] = 0;
 								}
 							}
@@ -452,7 +452,7 @@ ig.Entity.inject({
 				cy = (this.pos.y / ig.game.collisionMap.tilesize).floor() * ig.game.collisionMap.tilesize;
 
 			// Check if our entity is align on it
-			if(cx != this.pos.x || cy != this.pos.y) {
+			if(cx !== this.pos.x || cy !== this.pos.y) {
 				// Get the x distance to the current tile
 				var dx = this.pos.x - cx,
 					dy = this.pos.y - cy;
@@ -481,9 +481,9 @@ ig.Entity.inject({
 		// Only do something if there is a path ...
 		if(this.path) {
 			// Did we reached a waypoint?
-			if(((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x == this.path[0].x) && ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || this.pos.y == this.path[0].y)) {
+			if(((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x === this.path[0].x) && ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || this.pos.y === this.path[0].y)) {
 				// Was it the last waypoint?
-				if(this.path.length == 1) {
+				if(this.path.length === 1) {
 					// Stop the movement and set the position
 					this.vel.x = 0;
 					this.pos.x = this.path[0].x;
@@ -500,7 +500,7 @@ ig.Entity.inject({
 			}
 
 			// Calculate the speed if we move diagonal
-			if(this.pos.x != this.path[0].x && this.pos.y != this.path[0].y) {
+			if(this.pos.x !== this.path[0].x && this.pos.y !== this.path[0].y) {
 				speed = Math.sqrt(Math.pow(speed, 2) / 2);
 			}
 
