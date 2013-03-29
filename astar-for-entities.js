@@ -169,7 +169,7 @@ ig.Entity.inject({
 					else if(currentNode.x !== closed[currentNode.p].x && currentNode.y === closed[currentNode.p].y) direction = 1;
 					else if(currentNode.x === closed[currentNode.p].x && currentNode.y !== closed[currentNode.p].y) direction = 2;
 
-					// Only save the path node, if the path changes the direction
+					// If fewer waypoints are preferred, only save path node if change in direction has occured.
 					if(this._preferManyWaypoints || direction !== lastDirection) {
 						// Add the steps to the path
 						this.path.unshift({
