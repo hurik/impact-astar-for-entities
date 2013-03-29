@@ -161,13 +161,9 @@ ig.Entity.inject({
 					}
 
 					// Get the direction
-					if(currentNode.x != closed[currentNode.p].x && currentNode.y != closed[currentNode.p].y) {
-						direction = 0;
-					} else if(currentNode.x != closed[currentNode.p].x && currentNode.y == closed[currentNode.p].y) {
-						direction = 1;
-					} else if(currentNode.x == closed[currentNode.p].x && currentNode.y != closed[currentNode.p].y) {
-						direction = 2;
-					}
+					if     (currentNode.x !== closed[currentNode.p].x && currentNode.y !== closed[currentNode.p].y) direction = 0;
+					else if(currentNode.x !== closed[currentNode.p].x && currentNode.y === closed[currentNode.p].y) direction = 1;
+					else if(currentNode.x === closed[currentNode.p].x && currentNode.y !== closed[currentNode.p].y) direction = 2;
 
 					// Only save the path node, if the path changes the direction
 					if(direction != lastDirection) {
