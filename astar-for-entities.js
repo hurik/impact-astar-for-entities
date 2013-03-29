@@ -289,25 +289,15 @@ ig.Entity.inject({
 
 					// When the direction changed
 					if(currentNode.d !== newNode.d && currentNode.d !== 0) {
-						if(currentNode.d == 1 && (newNode.d == 2 || newNode.d == 4)) {
-							newNode.g = newNode.g + this.directionChangeMalus45degree;
-						} else if(currentNode.d == 2 && (newNode.d == 1 || newNode.d == 3)) {
-							newNode.g = newNode.g + this.directionChangeMalus45degree;
-						} else if(currentNode.d == 3 && (newNode.d == 2 || newNode.d == 5)) {
-							newNode.g = newNode.g + this.directionChangeMalus45degree;
-						} else if(currentNode.d == 4 && (newNode.d == 1 || newNode.d == 6)) {
-							newNode.g = newNode.g + this.directionChangeMalus45degree;
-						} else if(currentNode.d == 5 && (newNode.d == 3 || newNode.d == 8)) {
-							newNode.g = newNode.g + this.directionChangeMalus45degree;
-						} else if(currentNode.d == 6 && (newNode.d == 4 || newNode.d == 7)) {
-							newNode.g = newNode.g + this.directionChangeMalus45degree;
-						} else if(currentNode.d == 7 && (newNode.d == 6 || newNode.d == 8)) {
-							newNode.g = newNode.g + this.directionChangeMalus45degree;
-						} else if(currentNode.d == 8 && (newNode.d == 5 || newNode.d == 7)) {
-							newNode.g = newNode.g + this.directionChangeMalus45degree;
-						} else {
-							newNode.g = newNode.g + this.directionChangeMalus90degree;
-						}
+						if     (currentNode.d == 1 && (newNode.d == 2 || newNode.d == 4)) newNode.g += this.directionChangeMalus45degree;
+						else if(currentNode.d == 2 && (newNode.d == 1 || newNode.d == 3)) newNode.g += this.directionChangeMalus45degree;
+						else if(currentNode.d == 3 && (newNode.d == 2 || newNode.d == 5)) newNode.g += this.directionChangeMalus45degree;
+						else if(currentNode.d == 4 && (newNode.d == 1 || newNode.d == 6)) newNode.g += this.directionChangeMalus45degree;
+						else if(currentNode.d == 5 && (newNode.d == 3 || newNode.d == 8)) newNode.g += this.directionChangeMalus45degree;
+						else if(currentNode.d == 6 && (newNode.d == 4 || newNode.d == 7)) newNode.g += this.directionChangeMalus45degree;
+						else if(currentNode.d == 7 && (newNode.d == 6 || newNode.d == 8)) newNode.g += this.directionChangeMalus45degree;
+						else if(currentNode.d == 8 && (newNode.d == 5 || newNode.d == 7)) newNode.g += this.directionChangeMalus45degree;
+						else                                                              newNode.g += this.directionChangeMalus90degree;
 					}
 
 					// If diagonalMovement is true, we use the diagonal distance heuristic
