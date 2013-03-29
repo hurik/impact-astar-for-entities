@@ -34,6 +34,10 @@ defines(function() {
 ig.Entity.inject({
 	path: null,
 
+	// Should a waypoint be placed at every tile along the path,
+	// instead of only where a change in direction occurs?
+	_preferManyWaypoints: false,
+
 	headingDirection: 0,
 	// Heading direction values
 	// 1 4 6
@@ -166,7 +170,7 @@ ig.Entity.inject({
 					else if(currentNode.x === closed[currentNode.p].x && currentNode.y !== closed[currentNode.p].y) direction = 2;
 
 					// Only save the path node, if the path changes the direction
-					if(direction !== lastDirection) {
+					if(this._preferManyWaypoints || direction !== lastDirection) {
 						// Add the steps to the path
 						this.path.unshift({
 							x: currentNode.x * mapTilesize,
