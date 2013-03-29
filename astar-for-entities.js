@@ -91,7 +91,7 @@ ig.Entity.inject({
 		}
 
 		// Quick check if the destination tile is free
-		if(map[destinationNode.y][destinationNode.x] != 0) {
+		if(map[destinationNode.y][destinationNode.x] !== 0) {
 			this.path = null;
 
 			// Erase the entities from the collision map
@@ -218,9 +218,7 @@ ig.Entity.inject({
 					}
 
 					// Don't check the parent node, which is in the middle
-					if(dx == 0 && dy == 0) {
-						continue;
-					}
+					if(dx === 0 && dy === 0) continue;
 
 					direction++;
 
@@ -233,29 +231,19 @@ ig.Entity.inject({
 					}
 
 					// Check if the tile is free
-					if(map[newY][newX] != 0) {
-						continue;
-					}
+					if(map[newY][newX] !== 0) continue;
 
 					// Only use the upper left node, when both neighbor are not a wall
-					if(dx == -1 && dy == -1 && (map[currentNode.y - 1][currentNode.x] != 0 || map[currentNode.y][currentNode.x - 1] != 0)) {
-						continue;
-					}
+					if(dx === -1 && dy === -1 && (map[currentNode.y - 1][currentNode.x] !== 0 || map[currentNode.y][currentNode.x - 1] !== 0)) continue;
 
 					// Only use the upper right node, when both neighbor are not a wall
-					if(dx == 1 && dy == -1 && (map[currentNode.y - 1][currentNode.x] != 0 || map[currentNode.y][currentNode.x + 1] != 0)) {
-						continue;
-					}
+					if(dx === 1 && dy === -1 && (map[currentNode.y - 1][currentNode.x] !== 0 || map[currentNode.y][currentNode.x + 1] !== 0)) continue;
 
 					// Only use the lower left node, when both neighbor are not a wall
-					if(dx == -1 && dy == 1 && (map[currentNode.y][currentNode.x - 1] != 0 || map[currentNode.y + 1][currentNode.x] != 0)) {
-						continue;
-					}
+					if(dx === -1 && dy === 1 && (map[currentNode.y][currentNode.x - 1] !== 0 || map[currentNode.y + 1][currentNode.x] !== 0)) continue;
 
 					// Only use the lower right node, when both neighbor are not a wall
-					if(dx == 1 && dy == 1 && (map[currentNode.y][currentNode.x + 1] != 0 || map[currentNode.y + 1][currentNode.x] != 0)) {
-						continue;
-					}
+					if(dx === 1 && dy === 1 && (map[currentNode.y][currentNode.x + 1] !== 0 || map[currentNode.y + 1][currentNode.x] !== 0)) continue;
 
 					// Check if this tile already has a node
 					if(nodes[newX + ',' + newY]) {
@@ -310,7 +298,7 @@ ig.Entity.inject({
 					newNode.g = currentNode.g + Math.sqrt(Math.pow(newNode.x - currentNode.x, 2) + Math.pow(newNode.y - currentNode.y, 2));
 
 					// When the direction changed
-					if(currentNode.d != newNode.d && currentNode.d != 0) {
+					if(currentNode.d !== newNode.d && currentNode.d !== 0) {
 						if(currentNode.d == 1 && (newNode.d == 2 || newNode.d == 4)) {
 							newNode.g = newNode.g + this.directionChangeMalus45degree;
 						} else if(currentNode.d == 2 && (newNode.d == 1 || newNode.d == 3)) {
@@ -390,7 +378,7 @@ ig.Entity.inject({
 								changeTileY = (entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l;
 
 							if(changeTileX >= 0 && changeTileX < ig.game.collisionMap.width && changeTileY >= 0 && changeTileY < ig.game.collisionMap.height) {
-								if(addErase && ig.game.collisionMap.data[changeTileY][changeTileX] == 0) {
+								if(addErase && ig.game.collisionMap.data[changeTileY][changeTileX] === 0) {
 									ig.game.collisionMap.data[changeTileY][changeTileX] = 9999;
 								} else if(!addErase && ig.game.collisionMap.data[changeTileY][changeTileX] == 9999) {
 									ig.game.collisionMap.data[changeTileY][changeTileX] = 0;
