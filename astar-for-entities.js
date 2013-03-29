@@ -53,17 +53,11 @@ ig.Entity.inject({
 	},
 
 	getPath: function(destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray) {
-		if(diagonalMovement == null) {
-			diagonalMovement = true;
-		}
 
-		if(entityTypesArray == null) {
-			entityTypesArray = [];
-		}
-
-		if(ignoreEntityArray == null) {
-			ignoreEntityArray = [];
-		}
+		// Define default values for optional arguments.
+		if(typeof diagonalMovement === 'undefined') diagonalMovement = true;
+		if(typeof entityTypesArray === 'undefined') entityTypesArray = [];
+		if(typeof ignoreEntityArray === 'undefined') ignoreEntityArray = [];
 
 		// Get the map information
 		var mapWidth = ig.game.collisionMap.width,
