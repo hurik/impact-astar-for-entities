@@ -139,13 +139,9 @@ ig.Entity.inject({
 				// 1 stands for X change
 				// 2 stand for Y change
 				// Get the direction
-				if(currentNode.x != closed[currentNode.p].x && currentNode.y != closed[currentNode.p].y) {
-					lastDirection = 0;
-				} else if(currentNode.x != closed[currentNode.p].x && currentNode.y == closed[currentNode.p].y) {
-					lastDirection = 1;
-				} else if(currentNode.x == closed[currentNode.p].x && currentNode.y != closed[currentNode.p].y) {
-					lastDirection = 2;
-				}
+				if     (currentNode.x !== closed[currentNode.p].x && currentNode.y !== closed[currentNode.p].y) lastDirection = 0;
+				else if(currentNode.x !== closed[currentNode.p].x && currentNode.y === closed[currentNode.p].y) lastDirection = 1;
+				else if(currentNode.x === closed[currentNode.p].x && currentNode.y !== closed[currentNode.p].y) lastDirection = 2;
 
 				// Go up the chain to recreate the path
 				while(true) {
