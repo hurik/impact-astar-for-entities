@@ -257,25 +257,15 @@ ig.Entity.inject({
 
 						// When the direction changed
 						if(currentNode.d != direction) {
-							if(currentNode.d == 1 && (direction == 2 || direction == 4)) {
-								tempG = tempG + this.directionChangeMalus45degree;
-							} else if(currentNode.d == 2 && (direction == 1 || direction == 3)) {
-								tempG = tempG + this.directionChangeMalus45degree;
-							} else if(currentNode.d == 3 && (direction == 2 || direction == 5)) {
-								tempG = tempG + this.directionChangeMalus45degree;
-							} else if(currentNode.d == 4 && (direction == 1 || direction == 6)) {
-								tempG = tempG + this.directionChangeMalus45degree;
-							} else if(currentNode.d == 5 && (direction == 3 || direction == 8)) {
-								tempG = tempG + this.directionChangeMalus45degree;
-							} else if(currentNode.d == 6 && (direction == 4 || direction == 7)) {
-								tempG = tempG + this.directionChangeMalus45degree;
-							} else if(currentNode.d == 7 && (direction == 6 || direction == 8)) {
-								tempG = tempG + this.directionChangeMalus45degree;
-							} else if(currentNode.d == 8 && (direction == 5 || direction == 7)) {
-								tempG = tempG + this.directionChangeMalus45degree;
-							} else {
-								tempG = tempG + this.directionChangeMalus90degree;
-							}
+							if     (currentNode.d == 1 && (direction == 2 || direction == 4)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d == 2 && (direction == 1 || direction == 3)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d == 3 && (direction == 2 || direction == 5)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d == 4 && (direction == 1 || direction == 6)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d == 5 && (direction == 3 || direction == 8)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d == 6 && (direction == 4 || direction == 7)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d == 7 && (direction == 6 || direction == 8)) tempG += this.directionChangeMalus45degree;
+							else if(currentNode.d == 8 && (direction == 5 || direction == 7)) tempG += this.directionChangeMalus45degree;
+							else                                                              tempG += this.directionChangeMalus90degree;
 						}
 
 						// If it is smaller than the g value in the existing node, update the node
