@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.3.1
+ * v1.4.0
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -36,10 +36,18 @@ ig.Entity.inject({
     path: null,
 
     // Attention:
-    // - directionChangeMalus45degree, directionChangeMalus90degree and
-    //   _preferManyWaypoints will be set to default values. Don't alter them.
+    // directionChangeMalus45degree, directionChangeMalus90degree and
+    // _preferManyWaypoints will be set to default values. Don't alter them.
     nicerPath: false,
     headingAngle: 0, 
+
+    // Own collisionMap
+    // Attention
+    // - Not tested very well, possible bugs!
+    // - To give it a new position must be improved ... check the example in example-oc!
+    // - Doesn't work with entityTypesArray and ignoreEntityArray!
+    ownCollisionMap: false,
+    ownCollisionMapData: [],
 
     // Should a waypoint be placed at every tile along the path,
     // instead of only where a change in direction occurs?
@@ -71,10 +79,45 @@ ig.Entity.inject({
             this.directionChangeMalus90degree = -0.1;
             this._preferManyWaypoints = true;
         }
+
+        if (this.ownCollisionMap)
+            this._createOwnCollisionMap();
+    },
+
+    _createOwnCollisionMap: function () {
+        // Make a copy of the collision map
+        for (var i = 0; i < ig.game.collisionMap.data.length; i++)
+            this.ownCollisionMapData[i] = ig.game.collisionMap.data[i].slice();
+
+        var tx = Math.ceil(this.size.x / ig.game.collisionMap.tilesize);
+        var ty = Math.ceil(this.size.y / ig.game.collisionMap.tilesize);
+
+        for (var y = 0; y < this.ownCollisionMapData.length - ty + 1; y++) {
+            for (var x = 0; x < this.ownCollisionMapData[y].length - tx + 1; x++) {
+                if (ig.game.collisionMap.data[y][x] !== 0)
+                    continue;
+
+                var walkable = true;
+
+                for (var ey = 0; ey < ty; ey++) {
+                    for (var ex = 0; ex < tx; ex++) {
+                        if (ig.game.collisionMap.data[y + ey][x + ex] !== 0) {
+                            walkable = false;
+                            break;
+                        }
+                    }
+
+                    if (!walkable)
+                        break;
+                }
+
+                if (!walkable)
+                    this.ownCollisionMapData[y][x] = 1;
+            }
+        }
     },
 
     getPath: function (destinationX, destinationY, diagonalMovement, entityTypesArray, ignoreEntityArray) {
-
         // Define default values for optional arguments.
         if (typeof diagonalMovement === 'undefined')
             diagonalMovement = true;
@@ -84,10 +127,16 @@ ig.Entity.inject({
             ignoreEntityArray = [];
 
         // Get the map information
+        var map;
+
+        if (!this.ownCollisionMap)
+            map = ig.game.collisionMap.data;
+        else 
+            map = this.ownCollisionMapData;
+
         var mapWidth = ig.game.collisionMap.width,
         mapHeight = ig.game.collisionMap.height,
         mapTilesize = ig.game.collisionMap.tilesize,
-        map = ig.game.collisionMap.data,
         // Diagonal movement costs
         diagonalMovementCosts = Math.sqrt(2);
 
@@ -420,6 +469,13 @@ ig.Entity.inject({
     _addEraseEntities: function (addErase, entityTypesArray, ignoreEntityArray) {
         var ignoreThisEntity;
 
+        var map;
+
+        if (!this.ownCollisionMap)
+            map = ig.game.collisionMap.data;
+        else 
+            map = this.ownCollisionMapData;
+
         // Add or erase the entity types to the collision map
         // Go through the entityTypesArray
         for (i = 0; i < entityTypesArray.length; i++) {
@@ -447,10 +503,10 @@ ig.Entity.inject({
                             changeTileY = (entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l;
 
                             if (changeTileX >= 0 && changeTileX < ig.game.collisionMap.width && changeTileY >= 0 && changeTileY < ig.game.collisionMap.height) {
-                                if (addErase && ig.game.collisionMap.data[changeTileY][changeTileX] === 0) {
-                                    ig.game.collisionMap.data[changeTileY][changeTileX] = 9999;
-                                } else if (!addErase && ig.game.collisionMap.data[changeTileY][changeTileX] === 9999) {
-                                    ig.game.collisionMap.data[changeTileY][changeTileX] = 0;
+                                if (addErase && map[changeTileY][changeTileX] === 0) {
+                                    map[changeTileY][changeTileX] = 9999;
+                                } else if (!addErase && map[changeTileY][changeTileX] === 9999) {
+                                    map[changeTileY][changeTileX] = 0;
                                 }
                             }
                         }
