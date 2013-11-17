@@ -37,6 +37,12 @@ EntityPlayer = ig.Entity.extend({
         this.followPath(this.speed, true);
         
         this.parent();
+    },
+
+    draw: function () {
+        this.drawPath(0, 255, 33, 0.5);
+
+        this.parent();
     }
 });
 

@@ -736,8 +736,8 @@ ig.Entity.inject({
 
             for (var i = 0; i < this.path.length; i++) {
                 ig.system.context.lineTo(
-                    ig.system.getDrawPos(this.path[i].x + mapTilesize / 2 - ig.game.screen.x),
-                    ig.system.getDrawPos(this.path[i].y + mapTilesize / 2 - ig.game.screen.y));
+                    ig.system.getDrawPos(this.path[i].x + this.size.x / 2 - ig.game.screen.x),
+                    ig.system.getDrawPos(this.path[i].y + this.size.y / 2 - ig.game.screen.y));
             }
 
             ig.system.context.stroke();
