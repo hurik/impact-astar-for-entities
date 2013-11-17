@@ -92,16 +92,26 @@ ig.Entity.inject({
         var tx = Math.ceil(this.size.x / ig.game.collisionMap.tilesize);
         var ty = Math.ceil(this.size.y / ig.game.collisionMap.tilesize);
 
-        for (var y = 0; y < this.ownCollisionMapData.length - ty + 1; y++) {
-            for (var x = 0; x < this.ownCollisionMapData[y].length - tx + 1; x++) {
+        for (var y = 0; y < this.ownCollisionMapData.length; y++) {
+            for (var x = 0; x < this.ownCollisionMapData[y].length; x++) {
                 if (ig.game.collisionMap.data[y][x] !== 0)
                     continue;
 
                 var walkable = true;
 
                 for (var ey = 0; ey < ty; ey++) {
+                    if (y + ey >= this.ownCollisionMapData.length) {
+                        walkable = false;
+                        break;
+                    }
+
                     for (var ex = 0; ex < tx; ex++) {
-                        if (ig.game.collisionMap.data[y + ey][x + ex] !== 0) {
+                        if (x + ex >= this.ownCollisionMapData[y].length) {
+                            walkable = false;
+                            break;
+                        }
+
+                        if (walkable && ig.game.collisionMap.data[y + ey][x + ex] !== 0) {
                             walkable = false;
                             break;
                         }
@@ -721,11 +731,13 @@ ig.Entity.inject({
             ig.system.context.beginPath();
 
             ig.system.context.moveTo(
-                ig.system.getDrawPos(this.pos.x + this.size.x / 2 - ig.game.screen.x), ig.system.getDrawPos(this.pos.y + this.size.y / 2 - ig.game.screen.y));
+                ig.system.getDrawPos(this.pos.x + this.size.x / 2 - ig.game.screen.x),
+                ig.system.getDrawPos(this.pos.y + this.size.y / 2 - ig.game.screen.y));
 
             for (var i = 0; i < this.path.length; i++) {
                 ig.system.context.lineTo(
-                    ig.system.getDrawPos(this.path[i].x + mapTilesize / 2 - ig.game.screen.x), ig.system.getDrawPos(this.path[i].y + mapTilesize / 2 - ig.game.screen.y));
+                    ig.system.getDrawPos(this.path[i].x + mapTilesize / 2 - ig.game.screen.x),
+                    ig.system.getDrawPos(this.path[i].y + mapTilesize / 2 - ig.game.screen.y));
             }
 
             ig.system.context.stroke();
