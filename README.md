@@ -50,9 +50,19 @@ Draw the calculated path.
 * **a:** Alpha value of the color.
 * **lineWidth:** The width of the line ...
 
+### nicerPath (since v1.3.0)
+Activate it with `nicerPath: true,` in your entity. Check example-np!
+
+**Attention**
+* NicerPath doesn't use headingDirection it set the currentAnim.angle!
+* directionChangeMalus45degree, directionChangeMalus90degree and _preferManyWaypoints will be set to default values. Don't alter them.
+
+#### Example image
+![Example - nicerPath](https://raw.github.com/hurik/impact-astar-for-entities/master/example-nicerpath.png)
+
 
 ## Live demo
-Check out: [http://www.hurik.de/impact-astar-for-entities/](http://www.hurik.de/impact-astar-for-entities/)
+Check out: [http://www.andreasgiemza.de/impact-astar-for-entities/](http://www.andreasgiemza.de/impact-astar-for-entities/)
 
 ### Info
 * The **green player** is controled by clicking on the maps. It can't go through the obstacles, except the one in the middle. Check the player.js how it works ...
@@ -72,7 +82,7 @@ weltmeister.html
 
 
 ## Example images
-![Oldest Example](https://raw.github.com/hurik/impact-astar-for-entities/master/example.png)
+![Example](https://raw.github.com/hurik/impact-astar-for-entities/master/example.png)
 
 
 ## TODO
@@ -100,6 +110,10 @@ weltmeister.html
 
 
 ## Changelog
+#### v1.3.0
+* A* search algorithm
+    * Added nicerPath
+
 ##### v1.2.3
 * A* search algorithm
 	* Little bugfix with bigger entities
