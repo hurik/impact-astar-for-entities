@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.4.0
+ * v1.4.1
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -43,9 +43,7 @@ ig.Entity.inject({
 
     // Own collisionMap
     // Attention
-    // - Not tested very well, possible bugs!
-    // - To give it a new position must be improved ... check the example in example-oc!
-    // - Doesn't work with entityTypesArray and ignoreEntityArray!
+    // Doesn't work with entityTypesArray and ignoreEntityArray!
     ownCollisionMap: false,
     ownCollisionMapData: [],
 

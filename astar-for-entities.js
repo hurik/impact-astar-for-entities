@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.4.0
+ * v1.4.1
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -43,9 +43,7 @@ ig.Entity.inject({
 
     // Own collisionMap
     // Attention
-    // - Not tested very well, possible bugs!
-    // - To give it a new position must be improved ... check the example in example-oc!
-    // - Doesn't work with entityTypesArray and ignoreEntityArray!
+    // Doesn't work with entityTypesArray and ignoreEntityArray!
     ownCollisionMap: false,
     ownCollisionMapData: [],
 
@@ -92,16 +90,26 @@ ig.Entity.inject({
         var tx = Math.ceil(this.size.x / ig.game.collisionMap.tilesize);
         var ty = Math.ceil(this.size.y / ig.game.collisionMap.tilesize);
 
-        for (var y = 0; y < this.ownCollisionMapData.length - ty + 1; y++) {
-            for (var x = 0; x < this.ownCollisionMapData[y].length - tx + 1; x++) {
+        for (var y = 0; y < this.ownCollisionMapData.length; y++) {
+            for (var x = 0; x < this.ownCollisionMapData[y].length; x++) {
                 if (ig.game.collisionMap.data[y][x] !== 0)
                     continue;
 
                 var walkable = true;
 
                 for (var ey = 0; ey < ty; ey++) {
+                    if (y + ey >= this.ownCollisionMapData.length) {
+                        walkable = false;
+                        break;
+                    }
+
                     for (var ex = 0; ex < tx; ex++) {
-                        if (ig.game.collisionMap.data[y + ey][x + ex] !== 0) {
+                        if (x + ex >= this.ownCollisionMapData[y].length) {
+                            walkable = false;
+                            break;
+                        }
+
+                        if (walkable && ig.game.collisionMap.data[y + ey][x + ex] !== 0) {
                             walkable = false;
                             break;
                         }
@@ -112,7 +120,7 @@ ig.Entity.inject({
                 }
 
                 if (!walkable)
-                    this.ownCollisionMapData[y][x] = 1;
+                    this.ownCollisionMapData[y][x] = 8888;
             }
         }
     },
@@ -143,9 +151,41 @@ ig.Entity.inject({
         // Add the entities to the collision map
         this._addEraseEntities(true, entityTypesArray, ignoreEntityArray);
 
+        var cm_x = (destinationX / mapTilesize).floor();
+        var cm_y = (destinationY / mapTilesize).floor();
+
+        if (this.ownCollisionMap && map[cm_y][cm_x] === 8888) {
+            // we check if ownCollisionMap activated and
+            // if the clicked tile is deactivated because of the entity size
+            var ex = Math.ceil(this.size.x / ig.game.collisionMap.tilesize);
+            var ey = Math.ceil(this.size.y / ig.game.collisionMap.tilesize);
+
+            var foundSuitablePlace = false;
+
+            for (var iy = 0; iy < ey; iy++) {
+                if (cm_y - iy < 0)
+                    continue;
+
+                for (var ix = 0; ix < ex; ix++) {
+                    if (cm_x - ix < 0)
+                        continue;
+
+                    if (map[cm_y - iy][cm_x - ix] === 0) {
+                        cm_x = cm_x - ix;
+                        cm_y = cm_y - iy;
+                        foundSuitablePlace = true;
+                        break;
+                    }
+                }
+
+                if (foundSuitablePlace)
+                    break;
+            }
+        }        
+
         // Create the start and the destination as nodes
         var startNode = new asfeNode((this.pos.x / mapTilesize).floor(), (this.pos.y / mapTilesize).floor(), -1, 0),
-        destinationNode = new asfeNode((destinationX / mapTilesize).floor(), (destinationY / mapTilesize).floor(), -1, 0);
+        destinationNode = new asfeNode(cm_x, cm_y, -1, 0);
 
         // Check if the destination tile is not the start tile ...
         if (destinationNode.x === startNode.x && destinationNode.y === startNode.y) {
@@ -721,11 +761,13 @@ ig.Entity.inject({
             ig.system.context.beginPath();
 
             ig.system.context.moveTo(
-                ig.system.getDrawPos(this.pos.x + this.size.x / 2 - ig.game.screen.x), ig.system.getDrawPos(this.pos.y + this.size.y / 2 - ig.game.screen.y));
+                ig.system.getDrawPos(this.pos.x + this.size.x / 2 - ig.game.screen.x),
+                ig.system.getDrawPos(this.pos.y + this.size.y / 2 - ig.game.screen.y));
 
             for (var i = 0; i < this.path.length; i++) {
                 ig.system.context.lineTo(
-                    ig.system.getDrawPos(this.path[i].x + mapTilesize / 2 - ig.game.screen.x), ig.system.getDrawPos(this.path[i].y + mapTilesize / 2 - ig.game.screen.y));
+                    ig.system.getDrawPos(this.path[i].x + this.size.x / 2 - ig.game.screen.x),
+                    ig.system.getDrawPos(this.path[i].y + this.size.y / 2 - ig.game.screen.y));
             }
 
             ig.system.context.stroke();

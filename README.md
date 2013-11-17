@@ -63,8 +63,6 @@ Activate it with `nicerPath: true,` in your entity. Check example-np!
 Activate it with `ownCollisionMap: true,` in your entity. Check example-oc!
 
 **Attention**
-* Not tested very well, possible bugs!
-* To give it a new position must be improved ... check the example in example-oc!
 * Doesn't work with entityTypesArray and ignoreEntityArray!
 
 #### Example image
@@ -120,6 +118,12 @@ weltmeister.html
 
 
 ## Changelog
+##### v1.4.1
+* A* search algorithm
+	* Destination calculation for bigger entities
+* path drawing
+	* Fixed for bigger entities
+
 #### v1.4.0
 * A* search algorithm
 	* Added support for entities which are bigger as the tilesize
