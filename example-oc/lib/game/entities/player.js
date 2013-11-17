@@ -40,7 +40,10 @@ EntityPlayer = ig.Entity.extend({
     },
 
     draw: function () {
-        this.drawPath(0, 255, 33, 0.5);
+        if(!ig.global.wm) {
+            // Draw the path ...
+            this.drawPath(0, 255, 33, 0.5);
+        }
 
         this.parent();
     }

@@ -122,7 +122,7 @@ ig.Entity.inject({
                 }
 
                 if (!walkable)
-                    this.ownCollisionMapData[y][x] = 1;
+                    this.ownCollisionMapData[y][x] = 8888;
             }
         }
     },
@@ -153,9 +153,41 @@ ig.Entity.inject({
         // Add the entities to the collision map
         this._addEraseEntities(true, entityTypesArray, ignoreEntityArray);
 
+        var cm_x = (destinationX / mapTilesize).floor();
+        var cm_y = (destinationY / mapTilesize).floor();
+
+        if (this.ownCollisionMap && map[cm_y][cm_x] === 8888) {
+            // we check if ownCollisionMap activated and
+            // if the clicked tile is deactivated because of the entity size
+            var ex = Math.ceil(this.size.x / ig.game.collisionMap.tilesize);
+            var ey = Math.ceil(this.size.y / ig.game.collisionMap.tilesize);
+
+            var foundSuitablePlace = false;
+
+            for (var iy = 0; iy < ey; iy++) {
+                if (cm_y - iy < 0)
+                    continue;
+
+                for (var ix = 0; ix < ex; ix++) {
+                    if (cm_x - ix < 0)
+                        continue;
+
+                    if (map[cm_y - iy][cm_x - ix] === 0) {
+                        cm_x = cm_x - ix;
+                        cm_y = cm_y - iy;
+                        foundSuitablePlace = true;
+                        break;
+                    }
+                }
+
+                if (foundSuitablePlace)
+                    break;
+            }
+        }        
+
         // Create the start and the destination as nodes
         var startNode = new asfeNode((this.pos.x / mapTilesize).floor(), (this.pos.y / mapTilesize).floor(), -1, 0),
-        destinationNode = new asfeNode((destinationX / mapTilesize).floor(), (destinationY / mapTilesize).floor(), -1, 0);
+        destinationNode = new asfeNode(cm_x, cm_y, -1, 0);
 
         // Check if the destination tile is not the start tile ...
         if (destinationNode.x === startNode.x && destinationNode.y === startNode.y) {
