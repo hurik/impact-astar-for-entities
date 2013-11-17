@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.3.0
+ * v1.3.1
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -36,7 +36,6 @@ ig.Entity.inject({
     path: null,
 
     // Attention:
-    // - NicerPath doesn't use headingDirection it set the headingAngle!
     // - directionChangeMalus45degree, directionChangeMalus90degree and
     //   _preferManyWaypoints will be set to default values. Don't alter them.
     nicerPath: false,
@@ -390,8 +389,6 @@ ig.Entity.inject({
             y: this.pos.y
         });
 
-        //var check = ig.game.collisionMap.trace(this.path[0].x, this.path[0].y, this.path[this.path.length-1].x - this.path[0].x, this.path[this.path.length -1].y - this.path[0].y, this.size.x, this.size.y);
-        
         for (var i = 0; i < this.path.length - 2; i++) {
             if (!this._traceFix(this.path[i].x, this.path[i].y, this.path[i + 2].x - this.path[i].x, this.path[i + 2].y - this.path[i].y, this.size.x, this.size.y)) {
                 this.path.splice(i + 1, 1);
@@ -403,6 +400,7 @@ ig.Entity.inject({
         this.path.splice(0, 1);
     },
     
+    // This is totally stupid but so the trace function is working!
     _traceFix: function (x, y, vx, vy, objectWidth, objectHeight) {
         var steps = Math.max(Math.abs(vx), Math.abs(vy));
         
@@ -589,120 +587,71 @@ ig.Entity.inject({
             }
         }
 
-        if (!this.nicerPath) {
-            // Only do something if there is a path ...
-            if (this.path) {
-                // Did we reached a waypoint?
-                if (((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || this.pos.x === this.path[0].x) && ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || this.pos.y === this.path[0].y)) {
-                    // Was it the last waypoint?
-                    if (this.path.length === 1) {
-                        // Stop the movement and set the position
-                        this.vel.x = 0;
-                        this.pos.x = this.path[0].x;
-                        this.vel.y = 0;
-                        this.pos.y = this.path[0].y;
-
-                        // Nothing left to do.
-                        this.path = null;
-                        return;
-                    }
-
-                    // Erase the last waypoint
-                    this.path.splice(0, 1);
-                }
-
-                // Calculate the speed if we move diagonal
-                if (this.pos.x !== this.path[0].x && this.pos.y !== this.path[0].y) {
-                    speed = Math.sqrt(Math.pow(speed, 2) / 2);
-                }
-
-                // Move entity toward waypoint.
-                if ((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x)) {
-                    this.vel.x = 0;
-                    this.pos.x = this.path[0].x;
-                } else if (this.pos.x < this.path[0].x) {
-                    this.vel.x = speed;
-                } else if (this.pos.x > this.path[0].x) {
-                    this.vel.x = -speed;
-                }
-
-                if ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y)) {
-                    this.vel.y = 0;
-                    this.pos.y = this.path[0].y;
-                } else if (this.pos.y < this.path[0].y) {
-                    this.vel.y = speed;
-                } else if (this.pos.y > this.path[0].y) {
-                    this.vel.y = -speed;
-                }
-
-                // Get the heading direction
-                if (this.vel.x < 0 && this.vel.y < 0)
-                    this.headingDirection = 1;
-                else if (this.vel.x < 0 && this.vel.y > 0)
-                    this.headingDirection = 3;
-                else if (this.vel.x > 0 && this.vel.y < 0)
-                    this.headingDirection = 6;
-                else if (this.vel.x > 0 && this.vel.y > 0)
-                    this.headingDirection = 8;
-                else if (this.vel.x < 0)
-                    this.headingDirection = 2;
-                else if (this.vel.x > 0)
-                    this.headingDirection = 7;
-                else if (this.vel.y < 0)
-                    this.headingDirection = 4;
-                else if (this.vel.y > 0)
-                    this.headingDirection = 5;
-
-            } else {
-                // When there is no path, don't move ...
+        // Only do something if there is a path ...
+        if (this.path) {
+            if ((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || Math.abs(this.pos.x - this.path[0].x) < 0.5) {
                 this.vel.x = 0;
-                this.vel.y = 0;
-
-                this.headingDirection = 0;
+                this.pos.x = this.path[0].x;
             }
+
+            if ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || Math.abs(this.pos.y - this.path[0].y) < 0.5) {
+                this.vel.y = 0;
+                this.pos.y = this.path[0].y;
+            }
+
+            // Did we reached a waypoint?
+            if (this.pos.x === this.path[0].x && this.pos.y === this.path[0].y) {
+                // Erase the last waypoint
+                this.path.splice(0, 1);
+
+                // If it was the last nothing to do ...
+                if (!this.path.length) {
+                    this.path = null;
+
+                    return;
+                }
+            }
+
+            var distanceX = this.path[0].x - this.pos.x;
+            var distanceY = this.path[0].y - this.pos.y;
+
+            distanceLenght = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+            this.vel.x = distanceX / distanceLenght * speed;
+            this.vel.y = distanceY / distanceLenght * speed;
+
+            // Update the animation angle
+            this.headingAngle = Math.atan2(this.vel.y, this.vel.x) + Math.PI / 2;
+            
+            // 1 4 6
+            // 2 0 7
+            // 3 5 8
+            var angleToHeading = Math.atan2(this.vel.y, this.vel.x) + Math.PI;
+            
+            if (angleToHeading >= 7 * Math.PI / 8 && angleToHeading <= 9 * Math.PI / 8) {
+                this.headingDirection = 7;
+            } else if (angleToHeading >= 11 * Math.PI / 8 && angleToHeading <= 13 * Math.PI / 8) {
+                this.headingDirection = 5;
+            } else if (angleToHeading >= 3 * Math.PI / 8 && angleToHeading <= 5 * Math.PI / 8) {
+                this.headingDirection = 4;
+            } else if (angleToHeading > 5 * Math.PI / 8 && angleToHeading < 7 * Math.PI / 8) {
+                this.headingDirection = 6;
+            } else if (angleToHeading > 9 * Math.PI / 8 && angleToHeading < 11 * Math.PI / 8) {
+                this.headingDirection = 8;
+            } else if (angleToHeading > 1 * Math.PI / 8 && angleToHeading < 3 * Math.PI / 8) {
+                this.headingDirection = 1;
+            } else if (angleToHeading > 13 * Math.PI / 8 && angleToHeading < 15 * Math.PI / 8) {
+                this.headingDirection = 3;
+            } else if (angleToHeading >= 15 * Math.PI / 8 || angleToHeading <= 1 * Math.PI / 8) {
+                this.headingDirection = 2;
+            } 
         } else {
-            // Only do something if there is a path ...
-            if (this.path) {
-                if ((this.pos.x >= this.path[0].x && this.last.x < this.path[0].x) || (this.pos.x <= this.path[0].x && this.last.x > this.path[0].x) || Math.abs(this.pos.x - this.path[0].x) < 0.5) {
-                    this.vel.x = 0;
-                    this.pos.x = this.path[0].x;
-                }
+            // When there is no path, don't move ...
+            this.vel.x = 0;
+            this.vel.y = 0;
 
-                if ((this.pos.y >= this.path[0].y && this.last.y < this.path[0].y) || (this.pos.y <= this.path[0].y && this.last.y > this.path[0].y) || Math.abs(this.pos.y - this.path[0].y) < 0.5) {
-                    this.vel.y = 0;
-                    this.pos.y = this.path[0].y;
-                }
-
-                // Did we reached a waypoint?
-                if (this.pos.x === this.path[0].x && this.pos.y === this.path[0].y) {
-                    // Erase the last waypoint
-                    this.path.splice(0, 1);
-
-                    // If it was the last nothing to do ...
-                    if (!this.path.length) {
-                        this.path = null;
-
-                        return;
-                    }
-                }
-
-                var distanceX = this.path[0].x - this.pos.x;
-                var distanceY = this.path[0].y - this.pos.y;
-
-                distanceLenght = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-                this.vel.x = distanceX / distanceLenght * speed;
-                this.vel.y = distanceY / distanceLenght * speed;
-
-                // Update the animation angle
-                this.headingAngle = Math.atan2(this.vel.y, this.vel.x) + Math.PI / 2;
-            } else {
-                // When there is no path, don't move ...
-                this.vel.x = 0;
-                this.vel.y = 0;
-
-                this.headingAngle = 0;
-            }
+            this.headingAngle = 0;
+            this.headingDirection = 0;
         }
     },
 

@@ -54,7 +54,6 @@ Draw the calculated path.
 Activate it with `nicerPath: true,` in your entity. Check example-np!
 
 **Attention**
-* NicerPath doesn't use headingDirection it set the headingAngle!
 * directionChangeMalus45degree, directionChangeMalus90degree and _preferManyWaypoints will be set to default values. Don't alter them.
 
 #### Example image
@@ -110,6 +109,11 @@ weltmeister.html
 
 
 ## Changelog
+##### v1.3.1
+* path following
+    * Code cleanup + more comments
+    * Now headingDirection and headingAngle are set. Use what you prefer.
+
 #### v1.3.0
 * A* search algorithm
     * Added nicerPath
