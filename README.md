@@ -59,6 +59,17 @@ Activate it with `nicerPath: true,` in your entity. Check example-np!
 #### Example image
 ![Example - nicerPath](https://raw.github.com/hurik/impact-astar-for-entities/master/example-nicerpath.png)
 
+### ownCollisionMap (since v1.4.0)
+Activate it with `ownCollisionMap: true,` in your entity. Check example-oc!
+
+**Attention**
+* Not tested very well, possible bugs!
+* To give it a new position must be improved ... check the example in example-oc!
+* Doesn't work with entityTypesArray and ignoreEntityArray!
+
+#### Example image
+![Example - ownCollisionMap](https://raw.github.com/hurik/impact-astar-for-entities/master/example-owncollisionmap.png)
+
 
 ## Live demo
 Check out: [http://www.andreasgiemza.de/impact-astar-for-entities/](http://www.andreasgiemza.de/impact-astar-for-entities/)
@@ -109,6 +120,10 @@ weltmeister.html
 
 
 ## Changelog
+#### v1.4.0
+* A* search algorithm
+	* Added support for entities which are bigger as the tilesize
+
 ##### v1.3.1
 * path following
     * Code cleanup + more comments
