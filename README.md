@@ -3,7 +3,7 @@
 ## Information
 This plugin for the [Impact Game Engine](http://impactjs.com/) adds pathfinding to the entities. It also has a basic path following function, a example for path drawing function and a debug panel for showing the path of all entities.
 
-Since version 1.0.0 it also can take entity types into his calculation. But it is only realy working for fixed obsticles.
+Since version 1.0.0 it also can take entity types into his calculation. But it is only really working for fixed obstacles.
 
 **Attention:**
 * The entities must be aligned with a tile and
@@ -21,12 +21,12 @@ Check the `example/lib/game/main.js`, `example/lib/game/entities/player.js`, `ex
 
 Calculates the path and the the result will be saved in `this.path`.
 
-Since version 1.2.0 you also can activate the max movement with `this.maxMovementActive`. The lenght of the path can be modified with `this.maxMovement`. But you should deactivate the `this.directionChangeMalus45degree` and `this.directionChangeMalus90degree` maluses (Set them to zero ...) to prevent strange paths. Check the `example/lib/game/entities/player.js` for more information ...
+Since version 1.2.0 you also can activate the max movement with `this.maxMovementActive`. The length of the path can be modified with `this.maxMovement`. But you should deactivate the `this.directionChangeMalus45degree` and `this.directionChangeMalus90degree` maluses (Set them to zero ...) to prevent strange paths. Check the `example/lib/game/entities/player.js` for more information ...
 
 * **destinationX and destinationY:** The destination ...
 * **diagonalMovement:** If true diagonal movement is activated (Default) and when false it isn't.
 * **entityTypesArray:** It is an array! It wants the entity type as string! Example: ['EntityPlayer', 'EntityEnemy', ...]
-* **ignoreEntityArray:** Also an array! It wants references of the entities you want to exclude from the including into the collision map! Example: [this, enemey[0], ...]
+* **ignoreEntityArray:** Also an array! It wants references of the entities you want to exclude from the including into the collision map! Example: [this, enemy[0], ...]
 
 **followPath(speed, alignOnNearestTile)**
 
@@ -46,15 +46,15 @@ Heading direction values:
 
 Draw the calculated path.
 
-* **r, g and b:** The color of the path.
-* **a:** Alpha value of the color.
+* **r, g and b:** The colour of the path.
+* **a:** Alpha value of the colour.
 * **lineWidth:** The width of the line ...
 
 ### nicerPath (since v1.3.0)
 Activate it with `nicerPath: true,` in your entity. Check example-np!
 
 **Attention**
-* NicerPath doesn't use headingDirection it set the currentAnim.angle!
+* NicerPath doesn't use headingDirection it set the headingAngle!
 * directionChangeMalus45degree, directionChangeMalus90degree and _preferManyWaypoints will be set to default values. Don't alter them.
 
 #### Example image
@@ -65,13 +65,13 @@ Activate it with `nicerPath: true,` in your entity. Check example-np!
 Check out: [http://www.andreasgiemza.de/impact-astar-for-entities/](http://www.andreasgiemza.de/impact-astar-for-entities/)
 
 ### Info
-* The **green player** is controled by clicking on the maps. It can't go through the obstacles, except the one in the middle. Check the player.js how it works ...
+* The **green player** is controlled by clicking on the maps. It can't go through the obstacles, except the one in the middle. Check the player.js how it works ...
 * The **red enemy** follows the player. Every 2 seconds it calculates the path to the player. It cannot pass every obstacle. Check the enemy.js how it works ...
 * The **blue enemy** follows the player. Every 4 seconds his path is updated. It can pass the obstacles and it cannot move diagonal. Check the enemy2.js how it works ...
 
 
 ## Example
-To change the level or work with the code, add in the example folder the missing libary files and folders:
+To change the level or work with the code, add in the example folder the missing library files and folders:
 ```
 lib/weltmeister/
 lib/impact/
@@ -91,7 +91,7 @@ weltmeister.html
 	* Add coordinated movement (For the future ...)
 	* More?
 * path following (followPath)
-	* Very much room for improvments ...
+	* Very much room for improvements ...
 	* Make it more natural ...
 
 
@@ -100,7 +100,7 @@ weltmeister.html
 * Joncom (Deactivate diagonal movement)
 * FabienM (Heading Direction)
 * docmarionum1 (Teleportation bug)
-* tmfkmoney (Support for obsticles which are bigger than the tilesize)
+* tmfkmoney (Support for obstacles which are bigger than the tilesize)
 * chadrickm (Max movement)
 
 ### Based on
@@ -122,11 +122,11 @@ weltmeister.html
 
 ##### v1.2.2
 * A* search algorithm
-	* Little bugfix for the direction chnage maluses
+	* Little bugfix for the direction change maluses
 
 ##### v1.2.1
 * A* search algorithm
-	* Minor improvments
+	* Minor improvements
 * General
 	* Readme improved
 
@@ -162,7 +162,7 @@ weltmeister.html
 ##### v0.9.2
 * A* search algorithm
 	* Now using the diagonal distance heuristic
-	* Added seperate maluses for 45 degress an 90 degree direction changes, still testing for good values for the maluses
+	* Added separate maluses for 45 degrees an 90 degree direction changes, still testing for good values for the maluses
 * General
 	* Converted indentation to tabs
 
@@ -205,14 +205,14 @@ weltmeister.html
 * A* search algorithm
 	* Now calculates the real distances, working with even numbers wasn't faster
 * path drawing
-	* Basic function added, only as an example for a possible implematation
+	* Basic function added, only as an example for a possible implementation
 
 #### v0.6.0
 * A* search algorithm
-	* Checks now for walkable tiles and not for walls, no more problems with slopes anymore
+	* Checks now for walkable tiles and not for walls, no more problems with slopes any more
 * path following
 	* Added entity movement stop when there is no path
-	* No rounding anymore for diagonal movments speed calculation (Doesn't impact the framerate)
+	* No rounding any more for diagonal moments speed calculation (Doesn't impact the framerate)
 
 ##### v0.5.2
 * path following
@@ -227,8 +227,8 @@ weltmeister.html
 	* Added version numbering
 	* New example image
 * A* search algorithm
-	* The start tile of the entity is not anymore a part of the path
+	* The start tile of the entity is not any more a part of the path
 * path following
 	* Added followPath(speed) function (Experimental at the moment, low framerates not working ...)
 * Debug
-	* Startpoint of the 'show paths' debug feature is now the middle of the entity
+	* Start point of the 'show paths' debug feature is now the middle of the entity

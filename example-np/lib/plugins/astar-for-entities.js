@@ -36,10 +36,11 @@ ig.Entity.inject({
     path: null,
 
     // Attention:
-    // - NicerPath doesn't use headingDirection it set the currentAnim.angle
+    // - NicerPath doesn't use headingDirection it set the headingAngle!
     // - directionChangeMalus45degree, directionChangeMalus90degree and
     //   _preferManyWaypoints will be set to default values. Don't alter them.
     nicerPath: false,
+    headingAngle: 0, 
 
     // Should a waypoint be placed at every tile along the path,
     // instead of only where a change in direction occurs?
@@ -694,13 +695,13 @@ ig.Entity.inject({
                 this.vel.y = distanceY / distanceLenght * speed;
 
                 // Update the animation angle
-                this.currentAnim.angle = Math.atan2(this.vel.y, this.vel.x) + Math.PI / 2;
+                this.headingAngle = Math.atan2(this.vel.y, this.vel.x) + Math.PI / 2;
             } else {
                 // When there is no path, don't move ...
                 this.vel.x = 0;
                 this.vel.y = 0;
 
-                this.currentAnim.angle = 0;
+                this.headingAngle = 0;
             }
         }
     },

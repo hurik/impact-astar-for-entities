@@ -34,6 +34,9 @@ EntityPlayer = ig.Entity.extend({
 
         // Walk the path
         this.followPath(this.speed, true);
+        
+        // Set the current
+        this.currentAnim.angle = this.headingAngle;
 
         this.parent();
     }
