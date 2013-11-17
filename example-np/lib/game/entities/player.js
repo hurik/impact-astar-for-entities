@@ -29,7 +29,7 @@ EntityPlayer = ig.Entity.extend({
     update: function() {
         if(ig.input.pressed('leftClick')) {
             // Get the path
-            this.getPath(ig.input.mouse.x + ig.game.screen.x, ig.input.mouse.y + ig.game.screen.y, true);
+            this.getPath(ig.input.mouse.x + ig.game.screen.x, ig.input.mouse.y + ig.game.screen.y, true, ['EntityObstacle', 'EntityObstacle2', 'EntityObstacle3']);
         }
 
         // Walk the path
@@ -37,6 +37,15 @@ EntityPlayer = ig.Entity.extend({
         
         // Set the current
         this.currentAnim.angle = this.headingAngle;
+
+        this.parent();
+    },
+
+    draw: function () {
+        if(!ig.global.wm) {
+            // Draw the path ...
+            this.drawPath(0, 255, 33, 0.5);
+        }
 
         this.parent();
     }

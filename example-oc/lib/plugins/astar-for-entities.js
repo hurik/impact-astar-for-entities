@@ -2,7 +2,7 @@
  * astar-for-entities
  * https://github.com/hurik/impact-astar-for-entities
  *
- * v1.4.1
+ * v1.4.2
  *
  * Andreas Giemza
  * andreas@giemza.net
@@ -42,8 +42,6 @@ ig.Entity.inject({
     headingAngle: 0, 
 
     // Own collisionMap
-    // Attention
-    // Doesn't work with entityTypesArray and ignoreEntityArray!
     ownCollisionMap: false,
     ownCollisionMapData: [],
 
@@ -509,13 +507,6 @@ ig.Entity.inject({
     _addEraseEntities: function (addErase, entityTypesArray, ignoreEntityArray) {
         var ignoreThisEntity;
 
-        var map;
-
-        if (!this.ownCollisionMap)
-            map = ig.game.collisionMap.data;
-        else 
-            map = this.ownCollisionMapData;
-
         // Add or erase the entity types to the collision map
         // Go through the entityTypesArray
         for (i = 0; i < entityTypesArray.length; i++) {
@@ -543,16 +534,65 @@ ig.Entity.inject({
                             changeTileY = (entities[j].pos.y / ig.game.collisionMap.tilesize).floor() + l;
 
                             if (changeTileX >= 0 && changeTileX < ig.game.collisionMap.width && changeTileY >= 0 && changeTileY < ig.game.collisionMap.height) {
-                                if (addErase && map[changeTileY][changeTileX] === 0) {
-                                    map[changeTileY][changeTileX] = 9999;
-                                } else if (!addErase && map[changeTileY][changeTileX] === 9999) {
-                                    map[changeTileY][changeTileX] = 0;
+                                if (addErase && ig.game.collisionMap.data[changeTileY][changeTileX] === 0) {
+                                    ig.game.collisionMap.data[changeTileY][changeTileX] = 9999;
+
+                                    if (this.ownCollisionMap) {
+                                        this.ownCollisionMapData[changeTileY][changeTileX] = 9999;
+                                    }
+                                } else if (!addErase && ig.game.collisionMap.data[changeTileY][changeTileX] === 9999) {
+                                    ig.game.collisionMap.data[changeTileY][changeTileX] = 0;
+
+                                    if (this.ownCollisionMap) {
+                                        if (this.ownCollisionMapData[changeTileY][changeTileX] === 9999) {
+                                            this.ownCollisionMapData[changeTileY][changeTileX] = 0;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+
+        if (entityTypesArray.length > 0) {
+            var tx = Math.ceil(this.size.x / ig.game.collisionMap.tilesize);
+            var ty = Math.ceil(this.size.y / ig.game.collisionMap.tilesize);
+
+            for (var y = 0; y < this.ownCollisionMapData.length; y++) {
+                for (var x = 0; x < this.ownCollisionMapData[y].length; x++) {
+                    if (ig.game.collisionMap.data[y][x] !== 0)
+                        continue;
+
+                    var walkable = true;
+
+                    for (var ey = 0; ey < ty; ey++) {
+                        if (y + ey >= this.ownCollisionMapData.length) {
+                            walkable = false;
+                            break;
+                        }
+
+                        for (var ex = 0; ex < tx; ex++) {
+                            if (x + ex >= this.ownCollisionMapData[y].length) {
+                                walkable = false;
+                                break;
+                            }
+
+                            if (walkable && ig.game.collisionMap.data[y + ey][x + ex] !== 0) {
+                                walkable = false;
+                                break;
+                            }
+                        }
+
+                        if (!walkable)
+                            break;
+                    }
+
+                    if (!walkable)
+                        this.ownCollisionMapData[y][x] = 8888;
+                }
+            }           
         }
     },
 

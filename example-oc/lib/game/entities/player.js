@@ -30,7 +30,7 @@ EntityPlayer = ig.Entity.extend({
     update: function() {
         if(ig.input.pressed('leftClick')) {
             // Get the path
-            this.getPath(ig.input.mouse.x + ig.game.screen.x, ig.input.mouse.y + ig.game.screen.y, true);
+            this.getPath(ig.input.mouse.x + ig.game.screen.x, ig.input.mouse.y + ig.game.screen.y, true, ['EntityObstacle', 'EntityObstacle2', 'EntityObstacle3']);
         }
 
         // Walk the path

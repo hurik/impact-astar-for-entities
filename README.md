@@ -62,9 +62,6 @@ Activate it with `nicerPath: true,` in your entity. Check example-np!
 ### ownCollisionMap (since v1.4.0)
 Activate it with `ownCollisionMap: true,` in your entity. Check example-oc!
 
-**Attention**
-* Doesn't work with entityTypesArray and ignoreEntityArray!
-
 #### Example image
 ![Example - ownCollisionMap](https://raw.github.com/hurik/impact-astar-for-entities/master/example-owncollisionmap.png)
 
@@ -118,6 +115,10 @@ weltmeister.html
 
 
 ## Changelog
+##### v1.4.2
+* A* search algorithm
+	* Bigger entities now also working with entityTypesArray and ignoreEntityArray
+
 ##### v1.4.1
 * A* search algorithm
 	* Destination calculation for bigger entities
