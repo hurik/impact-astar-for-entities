@@ -67,7 +67,7 @@ Activate it with `ownCollisionMap: true,` in your entity. Check example-oc!
 
 
 ## Live demo
-Check out: [http://www.andreasgiemza.de/impact-astar-for-entities/](http://www.andreasgiemza.de/impact-astar-for-entities/)
+Check out: [http://www.andreasgiemza.de/javascript/impact-astar-for-entities/](http://www.andreasgiemza.de/javascript/impact-astar-for-entities/)
 
 ### Info
 * The **green player** is controlled by clicking on the maps. It can't go through the obstacles, except the one in the middle. Check the player.js how it works ...
