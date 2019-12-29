@@ -751,10 +751,10 @@ ig.Entity.inject({
             var distanceX = this.path[0].x - this.pos.x;
             var distanceY = this.path[0].y - this.pos.y;
 
-            distanceLenght = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+            var distanceLength = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-            this.vel.x = distanceX / distanceLenght * speed;
-            this.vel.y = distanceY / distanceLenght * speed;
+            this.vel.x = distanceX / distanceLength * speed;
+            this.vel.y = distanceY / distanceLength * speed;
 
             // Update the animation angle
             this.headingAngle = Math.atan2(this.vel.y, this.vel.x) + Math.PI / 2;
