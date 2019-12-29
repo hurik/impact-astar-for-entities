@@ -793,8 +793,6 @@ ig.Entity.inject({
 
     drawPath: function (r, g, b, a, lineWidth) {
         if (this.path) {
-            var mapTilesize = ig.game.collisionMap.tilesize;
-
             ig.system.context.strokeStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
             ig.system.context.lineWidth = lineWidth * ig.system.scale;
 
